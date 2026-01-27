@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>NEET A/R – Biotechnology</title>
+
+<style>
+body{
+  font-family: Arial, sans-serif;
+  margin:0;
+  background: linear-gradient(135deg,#c9d6ff,#e2e2e2);
+}
+
+/* Question Card */
+.box{
+  background:white;
+  width:92%;
+  max-width:700px;
+  margin:25px auto;
+  padding:20px;
+  border-radius:12px;
+  box-shadow:0 10px 25px rgba(0,0,0,0.1);
+}
+
+.tag{
+  display:inline-block;
+  padding:4px 10px;
+  font-size:13px;
+  border-radius:12px;
+  background:#f1f5f9;
+  margin-bottom:10px;
+}
+
+.option{
+  display:block;
+  padding:12px;
+  margin:10px 0;
+  border:1px solid #ccc;
+  border-radius:8px;
+  cursor:pointer;
+  background:#f9fafb;
+}
+
+.option:hover{
+  background:#eef2ff;
+}
+
+.correct{
+  background:#22c55e;
+  color:white;
+}
+
+.wrong{
+  background:#ef4444;
+  color:white;
+}
+
+/* Popup */
+.popup{
+  display:none;
+  position:fixed;
+  top:0; left:0;
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,0.6);
+}
+
+.popup-content{
+  background:white;
+  width:92%;
+  max-width:520px;
+  margin:100px auto;
+  padding:20px;
+  border-radius:12px;
+}
+
+.green{
+  color:#16a34a;
+  font-weight:bold;
+}
+
+.close{
+  float:right;
+  cursor:pointer;
+  font-size:18px;
+}
+
+.star{
+  float:right;
+  cursor:pointer;
+  font-size:20px;
+  color:#cbd5e1;
+}
+
+.star.active{
+  color:#facc15;
+}
+</style>
+</head>
+
+<body>
+
+<!-- QUESTION 1 -->
+<div class="box">
+<span class="tag">🟡 Difficulty: Medium</span>
+<span class="star" onclick="this.classList.toggle('active')">⭐</span>
+
+<h3>Q1. Bt Cotton (A/R)</h3>
+<p><b>Assertion (A):</b> Bt cotton plants are resistant to bollworm infestation.</p>
+<p><b>Reason (R):</b> Bt cotton produces Cry protein toxic to insects.</p>
+
+<button class="option" data-correct="true"
+ onclick="check(this,'A',
+ 'Cry protein encoded by Bt gene kills insect larvae.',
+ 'Other options do not correctly link Cry protein to bollworm resistance.')">
+A. Both A and R are true and R explains A
+</button>
+
+<button class="option"
+ onclick="check(this,'A',
+ 'Cry protein encoded by Bt gene kills insect larvae.',
+ 'Reason explains the assertion directly, so this option is incorrect.')">
+B. Both A and R are true but R does not explain A
+</button>
+
+<button class="option"
+ onclick="check(this,'A',
+ 'Cry protein encoded by Bt gene kills insect larvae.',
+ 'Reason is true and essential, so this option is incorrect.')">
+C. A is true but R is false
+</button>
+
+<button class="option"
+ onclick="check(this,'A',
+ 'Cry protein encoded by Bt gene kills insect larvae.',
+ 'Assertion is correct; this option contradicts NCERT.')">
+D. A is false but R is true
+</button>
+</div>
+
+<!-- QUESTION 2 -->
+<div class="box">
+<span class="tag">🟢 Difficulty: Easy</span>
+<span class="star" onclick="this.classList.toggle('active')">⭐</span>
+
+<h3>Q2. Insulin Production (A/R)</h3>
+<p><b>Assertion (A):</b> Recombinant DNA technology is used to produce human insulin.</p>
+<p><b>Reason (R):</b> Bacteria can express the human insulin gene.</p>
+
+<button class="option" data-correct="true"
+ onclick="check(this,'A',
+ 'Human insulin gene is cloned and expressed in bacteria.',
+ 'This option correctly links rDNA technology with insulin production.')">
+A
+</button>
+
+<button class="option"
+ onclick="check(this,'A',
+ 'Human insulin gene is cloned and expressed in bacteria.',
+ 'Expression of insulin gene is the explanation, not just a fact.')">
+B
+</button>
+
+<button class="option"
+ onclick="check(this,'A',
+ 'Human insulin gene is cloned and expressed in bacteria.',
+ 'Reason is true; hence this option is incorrect.')">
+C
+</button>
+
+<button class="option"
+ onclick="check(this,'A',
+ 'Human insulin gene is cloned and expressed in bacteria.',
+ 'Assertion is true as per NCERT.')">
+D
+</button>
+</div>
+
+<!-- QUESTION 3 -->
+<div class="box">
+<span class="tag">🔴 Difficulty: Tricky</span>
+<span class="star" onclick="this.classList.toggle('active')">⭐</span>
+
+<h3>Q3. Gene Therapy (A/R)</h3>
+<p><b>Assertion (A):</b> Gene therapy can be used to treat ADA deficiency.</p>
+<p><b>Reason (R):</b> Functional ADA gene is introduced into patient's lymphocytes.</p>
+
+<button class="option" data-correct="true"
+ onclick="check(this,'A',
+ 'Normal ADA gene compensates for the defective gene.',
+ 'Lymphocytes are commonly used for ADA gene therapy.')">
+A
+</button>
+
+<button class="option"
+ onclick="check(this,'A',
+ 'Normal ADA gene compensates for the defective gene.',
+ 'Explanation directly supports the assertion.')">
+B
+</button>
+
+<button class="option"
+ onclick="check(this,'A',
+ 'Normal ADA gene compensates for the defective gene.',
+ 'Reason is correct, so this option fails.')">
+C
+</button>
+
+<button class="option"
+ onclick="check(this,'A',
+ 'Normal ADA gene compensates for the defective gene.',
+ 'Assertion is NCERT-based and correct.')">
+D
+</button>
+</div>
+
+<!-- POPUP -->
+<div class="popup" id="popup">
+  <div class="popup-content">
+    <span class="close" onclick="closePopup()">✖</span>
+    <p class="green" id="correctAns"></p>
+    <p id="explanation"></p>
+    <p><b>Why your option is wrong:</b> <span id="wrongWhy"></span></p>
+  </div>
+</div>
+
+<script>
+function check(btn,correct,explain,wrongWhy){
+  let options = btn.parentElement.querySelectorAll(".option");
+  options.forEach(o=>{
+    o.disabled=true;
+    if(o.dataset.correct==="true"){
+      o.classList.add("correct");
+    }
+  });
+
+  if(btn.dataset.correct!=="true"){
+    btn.classList.add("wrong");
+    document.getElementById("correctAns").innerText =
+      "Correct Answer: Option " + correct;
+    document.getElementById("explanation").innerText =
+      "Explanation: " + explain;
+    document.getElementById("wrongWhy").innerText = wrongWhy;
+    document.getElementById("popup").style.display="block";
+  }
+}
+
+function closePopup(){
+  document.getElementById("popup").style.display="none";
+}
+</script>
+
+</body>
+</html>
