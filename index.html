@@ -1,136 +1,301 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html>
 <head>
-  <meta charset="UTF-8" />
-  <title>NEETSERIES – Biology PYQs</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />  <style>
-    body {
-      margin: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-      color: #ffffff;
-    }
-    header {
-      text-align: center;
-      padding: 28px 10px 10px;
-    }
-    header h1 {
-      margin: 0;
-      font-size: 2.6rem;
-      letter-spacing: 1px;
-      font-family: 'Times New Roman', Times, serif;
-    }
-    header p {
-      margin-top: 6px;
-      font-size: 0.9rem;
-      opacity: 0.8;
-    }
-    .container {
-      max-width: 950px;
-      margin: auto;
-      padding: 20px;
-    }
-    .question {
-      background: rgba(255, 255, 255, 0.1);
-      border-radius: 14px;
-      padding: 20px;
-      margin-bottom: 26px;
-      box-shadow: 0 8px 22px rgba(0,0,0,0.35);
-      position: relative;
-    }
-    .difficulty {
-      position: absolute;
-      top: -12px;
-      left: 18px;
-      padding: 4px 10px;
-      border-radius: 10px;
-      font-size: 0.75rem;
-      font-weight: 600;
-      background: #f1c40f;
-      color: #000;
-    }
-    .bookmark {
-      position: absolute;
-      top: 12px;
-      right: 16px;
-      font-size: 1.3rem;
-      cursor: pointer;
-    }
-    .question h3 {
-      margin-top: 22px;
-      font-size: 1.05rem;
-    }
-    .options button {
-      display: block;
-      width: 100%;
-      margin: 8px 0;
-      padding: 10px;
-      border-radius: 8px;
-      border: none;
-      background: #ecf0f1;
-      cursor: pointer;
-      font-size: 0.95rem;
-    }
-    .options button:hover { background: #dcdde1; }
-    .correct { background: #2ecc71 !important; color: #fff; }
-    .wrong { background: #e74c3c !important; color: #fff; }
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Neetseries</title>
 
-    .popup {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.75);
-      justify-content: center;
-      align-items: center;
-      z-index: 1000;
-    }
-    .popup-content {
-      background: #1f2a38;
-      padding: 22px;
-      border-radius: 14px;
-      max-width: 460px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-    }
-    .popup-content h4 { margin-top: 0; }
-    .close-btn {
-      margin-top: 12px;
-      padding: 6px 14px;
-      border: none;
-      background: #3498db;
-      color: #fff;
-      border-radius: 6px;
-      cursor: pointer;
-    }
-    .hint-btn {
-      margin-top: 10px;
-      padding: 6px 12px;
-      border: none;
-      background: #34495e;
-      color: #fff;
-      border-radius: 6px;
-      cursor: pointer;
-      font-size: 0.8rem;
-    }
-    footer {
-      text-align: center;
-      padding: 15px 10px 25px;
-      font-size: 0.8rem;
-      opacity: 0.75;
-    }
-  </style></head>
-<body><header>
-  <h1>NEETSERIES</h1>
-  <p><em>An ATCG publication</em></p>
-</header><div class="container"><!-- QUESTIONS 1–20 --><div class="question"><div class="difficulty">Easy</div><div class="bookmark" onclick="toggleBookmark(this)">☆</div><h3>1. Hormone responsible for milk ejection? (NEET 2022)</h3><div class="options"><button onclick="check(this,false,'Oxytocin causes contraction of myoepithelial cells.','Prolactin causes milk synthesis, not ejection.')">A. Prolactin</button><button onclick="check(this,true,'Oxytocin causes contraction of myoepithelial cells.','')">B. Oxytocin</button><button onclick="check(this,false,'Oxytocin causes contraction of myoepithelial cells.','Estrogen regulates secondary sexual characters.')">C. Estrogen</button><button onclick="check(this,false,'Oxytocin causes contraction of myoepithelial cells.','Progesterone maintains pregnancy.')">D. Progesterone</button></div><button class="hint-btn" onclick="showHint('Think about hormone causing contraction of milk ducts.')">Hint</button></div><div class="question"><div class="difficulty">Medium</div><div class="bookmark" onclick="toggleBookmark(this)">☆</div><h3>2. Assertion: Antibodies are produced by plasma cells. Reason: Plasma cells are differentiated B-lymphocytes. (NEET 2021)</h3><div class="options"><button onclick="check(this,true,'Both statements are true and R explains A.','')">A. Both true, R explains A</button><button onclick="check(this,false,'Both statements are true and R explains A.','R actually explains antibody secretion.')">B. Both true, R does not explain A</button><button onclick="check(this,false,'Both statements are true and R explains A.','Plasma cells do arise from B cells.')">C. A true, R false</button><button onclick="check(this,false,'Both statements are true and R explains A.','Antibodies are indeed produced by plasma cells.')">D. A false, R true</button></div><button class="hint-btn" onclick="showHint('Recall adaptive immunity.')">Hint</button></div><!-- Remaining questions abbreviated for readability but still 20 --><script>
-const moreQuestions = document.querySelector('.container');
-for(let i=3;i<=20;i++){
-  moreQuestions.innerHTML += `<div class="question"><div class="difficulty">Easy</div><div class="bookmark" onclick="toggleBookmark(this)">☆</div><h3>${i}. Sample NEET PYQ Biology Question ${i}</h3><div class="options"><button onclick="check(this,false,'Correct concept explanation.','This option is incorrect.')">A. Option A</button><button onclick="check(this,true,'Correct concept explanation.','')">B. Option B</button><button onclick="check(this,false,'Correct concept explanation.','Incorrect reasoning.')">C. Option C</button><button onclick="check(this,false,'Correct concept explanation.','Incorrect reasoning.')">D. Option D</button></div><button class="hint-btn" onclick="showHint('Recall NCERT line related to this concept.')">Hint</button></div>`;
+<style>
+  body{ margin:0; background:#fff; font-family:Arial, sans-serif; color:#111; }
+  header{ text-align:center; padding:22px 12px 10px; }
+  header h1{ margin:0; font-family:"Times New Roman", Times, serif; font-size:44px; font-weight:700; }
+  .subfoot{ margin-top:6px; font-size:14px; color:#555; text-transform:lowercase; }
+
+  .quoteWrap{ max-width:900px; margin:10px auto 10px; padding:0 14px; text-align:center; }
+  .quote{ font-family:"Times New Roman", Times, serif; font-size:18px; line-height:1.55; color:#444; margin:16px 0 0; }
+  .by{ display:block; margin-top:10px; font-size:14px; color:#666; }
+
+  .status{
+    max-width:900px;
+    margin:14px auto 8px;
+    padding:10px 14px;
+    font-size:13px;
+    color:#444;
+    border-top:1px solid #eee;
+    border-bottom:1px solid #eee;
+  }
+
+  .container{ max-width:900px; margin:auto; padding:10px 14px 40px; }
+  .card{ padding:16px 6px; border-bottom:1px solid #e6e6e6; }
+
+  .toprow{ display:flex; align-items:center; gap:10px; margin-bottom:10px; }
+
+  /* Difficulty badge base */
+  .diff{
+    font-size:12px;
+    padding:3px 10px;
+    border-radius:999px;
+    border:1px solid transparent;
+    font-weight:600;
+  }
+  /* Difficulty colors */
+  .easy{ background:#e9f9ef; color:#166534; border-color:#bbf7d0; }
+  .medium{ background:#fff7ed; color:#9a3412; border-color:#fed7aa; }
+  .hard{ background:#fef2f2; color:#991b1b; border-color:#fecaca; }
+
+  /* Type badge */
+  .typeBadge{
+    font-size:12px;
+    padding:3px 10px;
+    border-radius:999px;
+    background:#f3f4f6;
+    color:#374151;
+    border:1px solid #e5e7eb;
+    font-weight:600;
+  }
+
+  /* Bookmark star */
+  .bm{
+    margin-left:auto;
+    cursor:pointer;
+    user-select:none;
+    font-size:20px;
+    line-height:1;
+  }
+  .bm.off{ color:#9ca3af; }
+  .bm.on{ color:#f59e0b; } /* amber */
+
+  .q{ font-weight:700; margin:0 0 10px; line-height:1.35; white-space:pre-line; }
+
+  .opt{
+    display:block; width:100%;
+    background:none; border:none;
+    padding:6px 0; margin:4px 0;
+    color:#0b63c9; cursor:pointer;
+    text-align:left; font-size:15px;
+  }
+  .opt:hover{ text-decoration:underline; }
+
+  .correct{ color:green !important; font-weight:700; text-decoration:none !important; }
+  .wrong{ color:red !important; font-weight:700; text-decoration:none !important; }
+
+  .tools{ margin-top:10px; font-size:13px; color:#444; display:flex; gap:16px; align-items:center; }
+  .toolBtn{ cursor:pointer; user-select:none; display:inline-flex; align-items:center; gap:6px; }
+  .toolBtn:hover{ text-decoration:underline; }
+  .smallNote{ color:#777; cursor:default; }
+
+  #popup{
+    display:none;
+    position:fixed; left:0; top:0; right:0; bottom:0;
+    background:rgba(0,0,0,0.55);
+    padding:16px;
+    z-index:9999;
+  }
+  #popBox{
+    background:#fff;
+    max-width:560px;
+    margin:12% auto;
+    padding:16px;
+    border-radius:10px;
+    box-shadow:0 12px 30px rgba(0,0,0,0.25);
+  }
+  #close{
+    float:right; cursor:pointer; font-size:13px;
+    border:1px solid #ddd; background:#fafafa;
+    padding:6px 10px; border-radius:8px;
+  }
+  #popTitle{ margin:0 0 8px; font-size:16px; }
+  #popText{ margin:0; font-size:14px; line-height:1.45; color:#222; white-space:pre-line; }
+  .muted{ margin-top:10px; font-size:12px; color:#666; }
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>Neetseries</h1>
+  <div class="subfoot">an atcg publication</div>
+</header>
+
+<div class="quoteWrap">
+  <div class="quote">
+    "Its not that Im so smart, its just that I stay with problems longer."
+    <span class="by">- Albert Einstein</span>
+  </div>
+</div>
+
+<div class="status" id="statusLine">JS not running (if this text does not change after you press Run, JS is not executing)</div>
+
+<div class="container" id="quiz"></div>
+
+<div id="popup">
+  <div id="popBox">
+    <span id="close">Close</span>
+    <h3 id="popTitle"></h3>
+    <p id="popText"></p>
+    <div class="muted">Tap outside the box to close.</div>
+  </div>
+</div>
+
+<script>
+var Q = [
+  {t:"MCQ",d:"Easy",q:"Powerhouse of the cell is:",o:["Ribosome","Mitochondria","Golgi body","Lysosome"],a:1,h:"ATP production organelle.",e:"Mitochondria makes ATP, hence powerhouse."},
+  {t:"MCQ",d:"Medium",q:"DNA replication occurs during:",o:["G1 phase","S phase","G2 phase","M phase"],a:1,h:"Interphase stage.",e:"S phase is the synthesis phase for DNA replication."},
+  {t:"MCQ",d:"Easy",q:"Vitamin C deficiency causes:",o:["Rickets","Beriberi","Scurvy","Night blindness"],a:2,h:"Collagen related disease.",e:"Vitamin C deficiency reduces collagen synthesis and causes scurvy."},
+  {t:"MCQ",d:"Easy",q:"Xylem transports:",o:["Sugars","Water and minerals","Amino acids","Hormones"],a:1,h:"Upward transport.",e:"Xylem carries water and minerals from roots to aerial parts."},
+  {t:"MCQ",d:"Medium",q:"Site of fertilization in humans is usually:",o:["Uterus","Ampulla of oviduct","Cervix","Vagina"],a:1,h:"Ampullary region.",e:"Fertilization commonly occurs in the ampulla of the fallopian tube."},
+  {t:"MCQ",d:"Medium",q:"Insulin is secreted by:",o:["Alpha cells","Beta cells","Adrenal cortex","Thyroid"],a:1,h:"Islets of Langerhans.",e:"Beta cells of pancreas secrete insulin."},
+  {t:"MCQ",d:"Easy",q:"Oxygen released in photosynthesis comes from:",o:["CO2","Water","Glucose","Chlorophyll"],a:1,h:"Photolysis source.",e:"O2 is produced by splitting of water in light reaction."},
+  {t:"MCQ",d:"Hard",q:"Retrovirus enzyme for RNA to DNA is:",o:["Ligase","Reverse transcriptase","RNA polymerase","Helicase"],a:1,h:"RNA to DNA conversion.",e:"Reverse transcriptase synthesizes DNA using RNA template."},
+  {t:"MCQ",d:"Medium",q:"Functional unit of kidney is:",o:["Neuron","Nephron","Alveolus","Hepatocyte"],a:1,h:"Filters blood.",e:"Nephron is the structural and functional unit of kidney."},
+  {t:"MCQ",d:"Easy",q:"Best universal donor blood group:",o:["A+","B+","AB+","O-"],a:3,h:"No A/B antigens and Rh negative.",e:"O- lacks A/B and Rh antigens, safest universal donor."},
+
+  {t:"A/R",d:"Medium",q:"Assertion (A): Human heart is myogenic.\nReason (R): Heartbeat originates from SA node.",
+   o:["Both A and R are true and R is the correct explanation of A","Both A and R are true but R is not the correct explanation of A","A is true but R is false","A is false but R is true"],
+   a:0,h:"Pacemaker initiates impulse.",e:"SA node generates impulse; hence heart is myogenic. R explains A."},
+
+  {t:"A/R",d:"Easy",q:"Assertion (A): Plasma cells secrete antibodies.\nReason (R): Plasma cells are differentiated B-lymphocytes.",
+   o:["Both A and R are true and R is the correct explanation of A","Both A and R are true but R is not the correct explanation of A","A is true but R is false","A is false but R is true"],
+   a:0,h:"B-cells differentiate into plasma cells.",e:"Plasma cells (from B-cells) secrete antibodies. R explains A."},
+
+  {t:"MCQ",d:"Easy",q:"Ribosomes are involved in:",o:["Lipid synthesis","Protein synthesis","Photosynthesis","DNA replication"],a:1,h:"Translation site.",e:"Ribosomes perform protein synthesis."},
+  {t:"MCQ",d:"Medium",q:"Lysosomes contain:",o:["Pigments","Hydrolytic enzymes","DNA polymerase","Starch"],a:1,h:"Digestive vesicles.",e:"Lysosomes contain hydrolytic enzymes for intracellular digestion."},
+  {t:"MCQ",d:"Easy",q:"Oxytocin is mainly for:",o:["Milk synthesis","Milk ejection","Thyroid function","Spermatogenesis"],a:1,h:"Ejection reflex.",e:"Oxytocin causes milk ejection by myoepithelial contraction."},
+  {t:"MCQ",d:"Medium",q:"Initial CO2 fixation in C4 plants is by:",o:["Rubisco","PEP carboxylase","ATP synthase","Catalase"],a:1,h:"First enzyme in mesophyll.",e:"PEP carboxylase fixes CO2 first in C4 pathway."},
+  {t:"MCQ",d:"Medium",q:"Brain part controlling respiration and heartbeat:",o:["Cerebrum","Cerebellum","Medulla oblongata","Thalamus"],a:2,h:"Brainstem region.",e:"Medulla oblongata regulates vital autonomic functions."},
+  {t:"MCQ",d:"Easy",q:"Antibodies are produced by:",o:["T-cells","Plasma cells","RBCs","Platelets"],a:1,h:"Differentiated B-cells.",e:"Plasma cells secrete antibodies."},
+
+  {t:"A/R",d:"Hard",q:"Assertion (A): Photorespiration reduces photosynthetic efficiency.\nReason (R): RuBisCO can bind O2 and initiate glycolate pathway.",
+   o:["Both A and R are true and R is the correct explanation of A","Both A and R are true but R is not the correct explanation of A","A is true but R is false","A is false but R is true"],
+   a:0,h:"RuBisCO has dual activity.",e:"RuBisCO oxygenase causes photorespiration which wastes energy. R explains A."},
+
+  {t:"MCQ",d:"Easy",q:"Cell membrane is mainly:",o:["Cellulose","Phospholipid bilayer","Starch","Chitin"],a:1,h:"Fluid mosaic.",e:"Cell membrane is a phospholipid bilayer with proteins."}
+];
+
+function openPopup(title, text){
+  document.getElementById("popTitle").innerText = title;
+  document.getElementById("popText").innerText = text;
+  document.getElementById("popup").style.display = "block";
 }
-</script></div><footer>
-  © 2026 NEETSERIES · An ATCG Publication
-</footer><div class="popup" id="popup"><div class="popup-content" id="popupContent"></div></div><script>
-function check(btn,isCorrect,explanation,whyWrong){const p=document.getElementById('popup');const c=document.getElementById('popupContent');if(isCorrect){btn.classList.add('correct');c.innerHTML=`<h4>✅ Correct</h4><p>${explanation}</p>`;}else{btn.classList.add('wrong');c.innerHTML=`<h4>❌ Wrong</h4><p><b>Why wrong:</b> ${whyWrong}</p><p><b>Correct concept:</b> ${explanation}</p>`;}p.style.display='flex';}
-function showHint(t){const p=document.getElementById('popup');document.getElementById('popupContent').innerHTML=`<h4>💡 Hint</h4><p>${t}</p>`;p.style.display='flex';}
-document.getElementById('popup').onclick=e=>{if(e.target.id==='popup')e.target.style.display='none';};
-function toggleBookmark(s){s.textContent=s.textContent==='☆'?'★':'☆';}
-</script></body>
+function closePopup(){ document.getElementById("popup").style.display = "none"; }
+document.getElementById("close").onclick = closePopup;
+document.getElementById("popup").onclick = function(e){ if(e.target && e.target.id === "popup") closePopup(); };
+
+function getBM(){
+  var s = "";
+  try { s = localStorage.getItem("neet_bm"); } catch(err){ s=""; }
+  if(!s) return {};
+  try { return JSON.parse(s); } catch(e){ return {}; }
+}
+function setBM(obj){
+  try { localStorage.setItem("neet_bm", JSON.stringify(obj)); } catch(err){}
+}
+var BM = getBM();
+
+function diffClass(d){
+  d = (d||"").toLowerCase();
+  if(d === "easy") return "easy";
+  if(d === "medium") return "medium";
+  if(d === "hard") return "hard";
+  return "medium";
+}
+
+var quiz = document.getElementById("quiz");
+
+function render(){
+  quiz.innerHTML = "";
+  for(var i=0;i<Q.length;i++){
+    var card = document.createElement("div");
+    card.className = "card";
+    card.id = "q_" + i;
+
+    var top = document.createElement("div");
+    top.className = "toprow";
+
+    var diff = document.createElement("div");
+    diff.className = "diff " + diffClass(Q[i].d);
+    diff.innerText = Q[i].d;
+
+    var typeB = document.createElement("div");
+    typeB.className = "typeBadge";
+    typeB.innerText = Q[i].t;
+
+    var bm = document.createElement("div");
+    bm.className = "bm " + (BM[i] ? "on" : "off");
+    bm.innerText = BM[i] ? "★" : "☆";
+    bm.title = "Bookmark";
+
+    bm.onclick = (function(index, el){
+      return function(){
+        BM[index] = !BM[index];
+        setBM(BM);
+        el.className = "bm " + (BM[index] ? "on" : "off");
+        el.innerText = BM[index] ? "★" : "☆";
+      };
+    })(i, bm);
+
+    top.appendChild(diff);
+    top.appendChild(typeB);
+    top.appendChild(bm);
+
+    var ques = document.createElement("div");
+    ques.className = "q";
+    ques.innerText = (i+1) + ". " + Q[i].q;
+
+    card.appendChild(top);
+    card.appendChild(ques);
+
+    for(var j=0;j<Q[i].o.length;j++){
+      var btn = document.createElement("button");
+      btn.className = "opt";
+      btn.type = "button";
+      btn.innerText = String.fromCharCode(65+j) + ". " + Q[i].o[j];
+
+      btn.onclick = (function(qIndex, optIndex, button){
+        return function(){
+          var cardEl = document.getElementById("q_" + qIndex);
+          var all = cardEl.querySelectorAll(".opt");
+          for(var k=0;k<all.length;k++) all[k].disabled = true;
+
+          if(optIndex === Q[qIndex].a){
+            button.classList.add("correct");
+          } else {
+            button.classList.add("wrong");
+            if(all[Q[qIndex].a]) all[Q[qIndex].a].classList.add("correct");
+            openPopup("Wrong answer - Explanation", Q[qIndex].e);
+          }
+        };
+      })(i, j, btn);
+
+      card.appendChild(btn);
+    }
+
+    var tools = document.createElement("div");
+    tools.className = "tools";
+
+    var hintBtn = document.createElement("span");
+    hintBtn.className = "toolBtn";
+    hintBtn.innerText = "💡 Hint";
+    hintBtn.onclick = (function(index){
+      return function(){ openPopup("Hint", Q[index].h); };
+    })(i);
+
+    var note = document.createElement("span");
+    note.className = "smallNote";
+    note.innerText = "Explanation pops up if wrong";
+
+    tools.appendChild(hintBtn);
+    tools.appendChild(note);
+
+    card.appendChild(tools);
+    quiz.appendChild(card);
+  }
+
+  document.getElementById("statusLine").innerText = "Loaded " + Q.length + " questions OK";
+}
+
+render();
+</script>
+
+</body>
 </html>
