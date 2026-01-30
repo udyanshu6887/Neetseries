@@ -6,153 +6,275 @@
 <title>Neetseries</title>
 
 <style>
-body{
-  margin:0;
-  background:#fff;
-  font-family:Arial, sans-serif;
-  color:#111;
-}
+  body{ margin:0; background:#fff; font-family:Arial, sans-serif; color:#111; }
 
-header{
-  text-align:center;
-  padding:24px 10px 10px;
-}
-header h1{
-  margin:0;
-  font-family:"Times New Roman", Times, serif;
-  font-size:44px;
-}
-.subfoot{
-  margin-top:6px;
-  font-size:14px;
-  color:#666;
-  text-transform:lowercase;
-}
+  header{ text-align:center; padding:24px 10px 10px; }
+  header h1{ margin:0; font-family:"Times New Roman", Times, serif; font-size:44px; font-weight:700; }
+  .subfoot{ margin-top:6px; font-size:14px; color:#666; text-transform:lowercase; }
 
-.quote{
-  max-width:900px;
-  margin:12px auto 20px;
-  text-align:center;
-  font-family:"Times New Roman", Times, serif;
-  font-size:18px;
-  color:#444;
-}
-.quote span{
-  display:block;
-  margin-top:8px;
-  font-size:14px;
-  color:#666;
-}
+  .quoteWrap{ max-width:980px; margin:8px auto 8px; padding:0 14px; text-align:center; }
+  .quote{ font-family:"Times New Roman", Times, serif; font-size:18px; line-height:1.55; color:#444; margin:14px 0 0; }
+  .by{ display:block; margin-top:10px; font-size:14px; color:#666; }
 
-.controls{
-  max-width:900px;
-  margin:0 auto 12px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  padding:0 12px;
-}
+  .status{
+    max-width:980px;
+    margin:12px auto 8px;
+    padding:10px 14px;
+    font-size:13px;
+    color:#444;
+    border-top:1px solid #eee;
+    border-bottom:1px solid #eee;
+    display:flex;
+    gap:10px;
+    align-items:center;
+    justify-content:space-between;
+    flex-wrap:wrap;
+  }
 
-button{
-  padding:8px 16px;
-  border:none;
-  border-radius:6px;
-  cursor:pointer;
-  font-weight:600;
-}
-#startBtn{ background:#2563eb; color:#fff; }
-#submitBtn{ background:#16a34a; color:#fff; }
-#submitBtn:disabled{ background:#9ca3af; cursor:not-allowed; }
+  .controls{ display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
+  .btn{
+    border:1px solid #e5e7eb;
+    background:#111;
+    color:#fff;
+    padding:8px 12px;
+    border-radius:10px;
+    cursor:pointer;
+    font-weight:700;
+    font-size:13px;
+  }
+  .btn.secondary{ background:#fff; color:#111; }
+  .btn:disabled{ opacity:.5; cursor:not-allowed; }
 
-#timer{
-  font-weight:700;
-  font-size:16px;
-}
+  .pill{
+    border:1px solid #e5e7eb;
+    background:#fafafa;
+    padding:7px 10px;
+    border-radius:999px;
+    font-size:13px;
+    color:#111;
+    font-weight:700;
+  }
+  .mutedNote{ color:#666; font-size:12px; }
 
-.exam{
-  max-width:900px;
-  margin:auto;
-  display:flex;
-  gap:20px;
-  padding:10px 12px 40px;
-}
-.column{
-  width:50%;
-  border-right:1px solid #ddd;
-  padding-right:12px;
-}
-.column:last-child{
-  border-right:none;
-  padding-left:12px;
-}
+  .container{ max-width:980px; margin:auto; padding:10px 14px 30px; }
 
-.card{
-  padding:12px 4px;
-  border-bottom:1px solid #e5e7eb;
-}
+  /* NEET paper sheet */
+  .sheet{
+    position:relative;
+    border:1px solid #eee;
+    border-radius:14px;
+    padding:14px;
+    background:#fff;
+  }
+  .sheet:before{
+    content:"";
+    position:absolute;
+    top:14px;
+    bottom:14px;
+    left:50%;
+    width:1px;
+    background:#e6e6e6;
+    transform:translateX(-0.5px);
+  }
+  .twoCol{
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    gap:16px;
+  }
+  .col{ padding:0 10px; }
 
-.toprow{
-  display:flex;
-  gap:8px;
-  margin-bottom:6px;
-}
+  .card{
+    padding:10px 4px 14px;
+    border-bottom:1px solid #efefef;
+  }
+  .card:last-child{ border-bottom:none; }
 
-.diff{
-  font-size:12px;
-  padding:2px 10px;
-  border-radius:999px;
-  font-weight:600;
-}
-.easy{ background:#dcfce7; color:#166534; }
-.medium{ background:#ffedd5; color:#9a3412; }
-.hard{ background:#fee2e2; color:#991b1b; }
+  .toprow{ display:flex; align-items:center; gap:8px; margin-bottom:8px; flex-wrap:wrap; }
 
-.type{
-  font-size:12px;
-  padding:2px 10px;
-  border-radius:999px;
-  background:#f3f4f6;
-}
+  .diff{
+    font-size:11px;
+    padding:3px 9px;
+    border-radius:999px;
+    border:1px solid transparent;
+    font-weight:800;
+  }
+  .easy{ background:#e9f9ef; color:#166534; border-color:#bbf7d0; }
+  .medium{ background:#fff7ed; color:#9a3412; border-color:#fed7aa; }
+  .hard{ background:#fef2f2; color:#991b1b; border-color:#fecaca; }
 
-.q{
-  font-weight:700;
-  margin-bottom:6px;
-  white-space:pre-line;
-}
+  .typeBadge{
+    font-size:11px;
+    padding:3px 9px;
+    border-radius:999px;
+    background:#f3f4f6;
+    color:#374151;
+    border:1px solid #e5e7eb;
+    font-weight:800;
+  }
+  .topicBadge{
+    font-size:11px;
+    padding:3px 9px;
+    border-radius:999px;
+    background:#eef2ff;
+    color:#3730a3;
+    border:1px solid #c7d2fe;
+    font-weight:800;
+  }
 
-.opt{
-  display:block;
-  background:none;
-  border:none;
-  padding:4px 0;
-  cursor:pointer;
-  color:#1d4ed8;
-  text-align:left;
-}
-.opt:hover{ text-decoration:underline; }
+  .q{
+    font-weight:800;
+    margin:0 0 8px;
+    line-height:1.35;
+    white-space:pre-line;
+    font-size:14px;
+  }
 
-.correct{ color:green; font-weight:700; }
-.wrong{ color:red; font-weight:700; }
+  /* Option row with tick box */
+  .optRow{
+    display:flex;
+    align-items:flex-start;
+    gap:10px;
+    padding:6px 0;
+    cursor:pointer;
+    user-select:none;
+  }
+  .optRow:hover .optText{ text-decoration:underline; }
 
-#popup{
-  display:none;
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,0.6);
-}
-#popbox{
-  background:#fff;
-  max-width:520px;
-  margin:12% auto;
-  padding:16px;
-  border-radius:10px;
-}
-#close{
-  float:right;
-  cursor:pointer;
-  font-size:13px;
-  color:#555;
-}
+  .tickBox{
+    width:18px;
+    height:18px;
+    border:2px solid #9ca3af;
+    border-radius:4px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    margin-top:1px;
+    flex: 0 0 auto;
+    color:#fff;
+    font-weight:900;
+    font-size:13px;
+    line-height:1;
+  }
+  .optText{
+    color:#0b63c9;
+    font-size:14px;
+    line-height:1.3;
+  }
+
+  /* chosen state */
+  .chosen .tickBox{
+    background:#111;
+    border-color:#111;
+  }
+  .chosen .tickBox:after{ content:"✓"; }
+  .chosen .optText{ text-decoration:none; }
+
+  /* After submit marking */
+  .correct .optText{ color:#0f7a2a !important; font-weight:900; text-decoration:none !important; }
+  .wrong .optText{ color:#b91c1c !important; font-weight:900; text-decoration:none !important; }
+  .correct .tickBox{ border-color:#0f7a2a; }
+  .wrong .tickBox{ border-color:#b91c1c; }
+
+  .tools{ margin-top:8px; font-size:12px; color:#444; display:flex; gap:14px; align-items:center; }
+  .smallNote{ color:#777; cursor:default; }
+
+  /* Analytics */
+  .analytics{
+    max-width:980px;
+    margin:0 auto 50px;
+    padding:0 14px;
+    display:none;
+  }
+  .panel{
+    border:1px solid #eee;
+    border-radius:14px;
+    padding:14px;
+    background:#fff;
+    margin-top:14px;
+  }
+  .panel h3{ margin:0 0 8px; font-size:16px; }
+  .kpis{ display:flex; gap:10px; flex-wrap:wrap; }
+  .kpi{
+    border:1px solid #e5e7eb;
+    background:#fafafa;
+    border-radius:12px;
+    padding:10px 12px;
+    min-width:150px;
+  }
+  .kpi .label{ font-size:12px; color:#666; }
+  .kpi .value{ font-size:18px; font-weight:900; margin-top:4px; }
+
+  table{
+    width:100%;
+    border-collapse:collapse;
+    font-size:13px;
+    margin-top:10px;
+  }
+  th, td{
+    border-bottom:1px solid #eee;
+    padding:8px 6px;
+    text-align:left;
+    vertical-align:top;
+  }
+  th{ color:#444; font-size:12px; }
+
+  .bars{ margin-top:10px; }
+  .barRow{ display:flex; align-items:center; gap:10px; margin:8px 0; }
+  .barLabel{ width:160px; font-size:12px; color:#333; font-weight:700; }
+  .barTrack{ flex:1; height:12px; background:#f3f4f6; border-radius:999px; overflow:hidden; border:1px solid #e5e7eb; }
+  .barFill{ height:100%; background:#111; width:0%; }
+  .barVal{ width:90px; font-size:12px; color:#444; text-align:right; }
+
+  .toggleRow{ display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap; }
+  .toggleBtn{
+    border:1px solid #e5e7eb;
+    background:#fff;
+    color:#111;
+    padding:8px 12px;
+    border-radius:10px;
+    cursor:pointer;
+    font-weight:800;
+    font-size:13px;
+  }
+  .explanations{ display:none; margin-top:10px; }
+  .expItem{ padding:10px 0; border-bottom:1px solid #eee; }
+  .expItem:last-child{ border-bottom:none; }
+  .expQ{ font-weight:900; margin-bottom:6px; white-space:pre-line; }
+  .expA{ color:#0f7a2a; font-weight:900; margin-bottom:6px; }
+  .expText{ color:#333; font-size:13px; white-space:pre-line; }
+
+  /* Popup */
+  #popup{
+    display:none;
+    position:fixed; left:0; top:0; right:0; bottom:0;
+    background:rgba(0,0,0,0.55);
+    padding:16px;
+    z-index:9999;
+  }
+  #popBox{
+    background:#fff;
+    max-width:560px;
+    margin:10% auto;
+    padding:16px;
+    border-radius:10px;
+    box-shadow:0 12px 30px rgba(0,0,0,0.25);
+  }
+  #close{
+    float:right; cursor:pointer; font-size:13px;
+    border:1px solid #ddd; background:#fafafa;
+    padding:6px 10px; border-radius:8px;
+  }
+  #popTitle{ margin:0 0 8px; font-size:16px; }
+  #popText{ margin:0; font-size:14px; line-height:1.45; color:#222; white-space:pre-line; }
+  .muted{ margin-top:10px; font-size:12px; color:#666; }
+
+  /* Responsive */
+  @media (max-width: 820px){
+    .twoCol{ grid-template-columns:1fr; }
+    .sheet:before{ display:none; }
+    .col{ padding:0 2px; }
+    .barLabel{ width:120px; }
+  }
 </style>
 </head>
 
@@ -163,122 +285,597 @@ button{
   <div class="subfoot">an atcg publication</div>
 </header>
 
-<div class="quote">
-  “It’s not that I’m so smart, it’s just that I stay with problems longer.”
-  <span>— Albert Einstein</span>
+<div class="quoteWrap">
+  <div class="quote">
+    "It's not that I'm so smart, it's just that I stay with problems longer."
+    <span class="by">— Albert Einstein</span>
+  </div>
 </div>
 
-<div class="controls">
-  <button id="startBtn">Begin Test</button>
-  <div id="timer">⏱ 16:00</div>
-  <button id="submitBtn" disabled>Submit</button>
+<div class="status" id="statusLine">
+  <div id="statusText">Ready. Click <b>Begin Test</b> to start.</div>
+  <div class="controls">
+    <button class="btn" id="startBtn" type="button">Begin Test</button>
+    <button class="btn secondary" id="submitBtn" type="button" disabled>Submit Test</button>
+    <div class="pill" id="timerPill">⏱ 16:00</div>
+    <div class="pill" id="progressPill">Attempted: 0/16</div>
+    <div class="mutedNote" id="lockNote">Options unlock after the test starts.</div>
+  </div>
 </div>
 
-<div class="exam">
-  <div class="column" id="left"></div>
-  <div class="column" id="right"></div>
+<div class="container">
+  <div class="sheet">
+    <div class="twoCol">
+      <div class="col" id="leftCol"></div>
+      <div class="col" id="rightCol"></div>
+    </div>
+  </div>
+</div>
+
+<div class="analytics" id="analytics">
+  <div class="panel">
+    <div class="toggleRow">
+      <h3 style="margin:0;">Result Analytics</h3>
+      <button class="toggleBtn" id="toggleExplainBtn" type="button">Show Explanations</button>
+    </div>
+
+    <div class="kpis" id="kpis"></div>
+
+    <h3 style="margin-top:16px;">Topic-wise Performance</h3>
+    <div id="topicTableWrap"></div>
+
+    <h3 style="margin-top:16px;">Time Spent by Topic</h3>
+    <div class="bars" id="topicBars"></div>
+
+    <div class="explanations" id="explanations"></div>
+  </div>
 </div>
 
 <div id="popup">
-  <div id="popbox">
+  <div id="popBox">
     <span id="close">Close</span>
     <h3 id="popTitle"></h3>
     <p id="popText"></p>
+    <div class="muted">Tap outside the box to close.</div>
   </div>
 </div>
 
 <script>
-const Q = [
- {t:"MCQ",d:"Easy",q:"Powerhouse of the cell is:",o:["Ribosome","Mitochondria","Golgi body","Lysosome"],a:1,e:"ATP production"},
- {t:"MCQ",d:"Medium",q:"DNA replication occurs during:",o:["G1","S","G2","M"],a:1,e:"S phase"},
- {t:"MCQ",d:"Easy",q:"Vitamin C deficiency causes:",o:["Rickets","Beriberi","Scurvy","Night blindness"],a:2,e:"Scurvy"},
- {t:"MCQ",d:"Medium",q:"Functional unit of kidney:",o:["Neuron","Nephron","Alveolus","Hepatocyte"],a:1,e:"Nephron"},
- {t:"A/R",d:"Medium",q:"Assertion: Heart is myogenic\nReason: SA node initiates impulse",
-  o:["Both true and R explains A","Both true but R doesn't","A true R false","A false R true"],a:0,e:"SA node causes myogenic beat"},
- {t:"MCQ",d:"Easy",q:"Oxygen in photosynthesis comes from:",o:["CO2","Water","Glucose","Chlorophyll"],a:1,e:"Photolysis"},
- {t:"A/R",d:"Hard",q:"Assertion: Photorespiration reduces yield\nReason: RuBisCO binds O2",
-  o:["Both true and R explains A","Both true but R doesn't","A true R false","A false R true"],a:0,e:"Oxygenase activity"},
- {t:"MCQ",d:"Easy",q:"Cell membrane is:",o:["Cellulose","Phospholipid bilayer","Starch","Chitin"],a:1,e:"Fluid mosaic"}
+/* =======================
+   QUESTION BANK (add PYQs here)
+   Each item:
+   {t,d,topic,q,o[4],a,e}
+   ======================= */
+var BANK = [
+  {t:"MCQ", d:"Easy", topic:"Cell Biology", q:"Powerhouse of the cell is:", o:["Ribosome","Mitochondria","Golgi body","Lysosome"], a:1, e:"Mitochondria produces ATP via oxidative phosphorylation."},
+  {t:"MCQ", d:"Medium", topic:"Cell Cycle", q:"DNA replication occurs during:", o:["G1 phase","S phase","G2 phase","M phase"], a:1, e:"DNA replicates in S phase (synthesis phase) of interphase."},
+  {t:"MCQ", d:"Easy", topic:"Human Health", q:"Vitamin C deficiency causes:", o:["Rickets","Beriberi","Scurvy","Night blindness"], a:2, e:"Vitamin C is needed for collagen synthesis; deficiency causes scurvy."},
+  {t:"MCQ", d:"Easy", topic:"Plant Anatomy", q:"Xylem mainly transports:", o:["Sugars","Water and minerals","Amino acids","Hormones"], a:1, e:"Xylem transports water and minerals from roots to aerial parts."},
+  {t:"MCQ", d:"Medium", topic:"Human Reproduction", q:"Site of fertilization in humans is usually:", o:["Uterus","Ampulla of oviduct","Cervix","Vagina"], a:1, e:"Fertilization usually occurs at ampullary region of the fallopian tube."},
+  {t:"MCQ", d:"Medium", topic:"Endocrine", q:"Insulin is secreted by:", o:["Alpha cells","Beta cells","Adrenal cortex","Thyroid"], a:1, e:"Beta cells of islets of Langerhans secrete insulin."},
+  {t:"MCQ", d:"Easy", topic:"Photosynthesis", q:"Oxygen released in photosynthesis comes from:", o:["CO2","Water","Glucose","Chlorophyll"], a:1, e:"O2 is released from photolysis (splitting) of water."},
+  {t:"MCQ", d:"Hard", topic:"Biotechnology", q:"Retrovirus enzyme for RNA to DNA is:", o:["Ligase","Reverse transcriptase","RNA polymerase","Helicase"], a:1, e:"Reverse transcriptase synthesizes DNA using RNA template."},
+
+  {t:"MCQ", d:"Medium", topic:"Excretion", q:"Functional unit of kidney is:", o:["Neuron","Nephron","Alveolus","Hepatocyte"], a:1, e:"Nephron is the structural and functional unit of kidney."},
+  {t:"MCQ", d:"Easy", topic:"Blood Groups", q:"Best universal donor blood group is:", o:["A+","B+","AB+","O-"], a:3, e:"O- lacks A, B and Rh antigens; safest donor RBC type."},
+
+  {t:"A/R", d:"Medium", topic:"Circulation", q:"Assertion (A): Human heart is myogenic.\nReason (R): Heartbeat originates from SA node.",
+   o:["Both A and R are true and R is the correct explanation of A","Both A and R are true but R is not the correct explanation of A","A is true but R is false","A is false but R is true"],
+   a:0, e:"SA node initiates impulse independently → heart is myogenic. R explains A."},
+
+  {t:"A/R", d:"Easy", topic:"Immunity", q:"Assertion (A): Plasma cells secrete antibodies.\nReason (R): Plasma cells are differentiated B-lymphocytes.",
+   o:["Both A and R are true and R is the correct explanation of A","Both A and R are true but R is not the correct explanation of A","A is true but R is false","A is false but R is true"],
+   a:0, e:"B-lymphocytes differentiate into plasma cells that secrete antibodies."},
+
+  {t:"MCQ", d:"Easy", topic:"Molecular Biology", q:"Ribosomes are primarily involved in:", o:["Lipid synthesis","Protein synthesis","Photosynthesis","DNA replication"], a:1, e:"Ribosomes are the site of translation (protein synthesis)."},
+  {t:"MCQ", d:"Medium", topic:"Cell Biology", q:"Lysosomes contain mainly:", o:["Photosynthetic pigments","Hydrolytic enzymes","DNA polymerase","Starch granules"], a:1, e:"Lysosomes contain hydrolytic enzymes for intracellular digestion."},
+  {t:"MCQ", d:"Easy", topic:"Reproduction", q:"Oxytocin is mainly responsible for:", o:["Milk synthesis","Milk ejection","Spermatogenesis","Thyroid regulation"], a:1, e:"Oxytocin triggers milk ejection via myoepithelial contraction."},
+  {t:"MCQ", d:"Medium", topic:"Photosynthesis", q:"Initial CO2 fixation in C4 plants is by:", o:["Rubisco","PEP carboxylase","ATP synthase","Catalase"], a:1, e:"PEP carboxylase fixes CO2 first in C4 pathway."},
+  {t:"MCQ", d:"Medium", topic:"Neural Control", q:"Part of brain controlling breathing and heartbeat is:", o:["Cerebrum","Cerebellum","Medulla oblongata","Thalamus"], a:2, e:"Medulla oblongata controls vital autonomic functions."},
+  {t:"MCQ", d:"Easy", topic:"Immunity", q:"Antibodies are immunoglobulins produced by:", o:["T-cells","Plasma cells","RBCs","Platelets"], a:1, e:"Plasma cells secrete antibodies."},
+
+  {t:"A/R", d:"Hard", topic:"Photosynthesis", q:"Assertion (A): Photorespiration reduces photosynthetic efficiency.\nReason (R): RuBisCO can bind O2 and initiate glycolate pathway.",
+   o:["Both A and R are true and R is the correct explanation of A","Both A and R are true but R is not the correct explanation of A","A is true but R is false","A is false but R is true"],
+   a:0, e:"RuBisCO oxygenase activity initiates photorespiration, wasting energy; R explains A."},
+
+  {t:"MCQ", d:"Easy", topic:"Cell Biology", q:"Main component of cell membrane is:", o:["Cellulose","Phospholipid bilayer","Starch","Chitin"], a:1, e:"Cell membrane is primarily a phospholipid bilayer (fluid mosaic model)."},
+  {t:"MCQ", d:"Hard", topic:"Ecology", q:"Who is called the father of Indian ecology?", o:["Ramdeo Misra","E.P. Odum","R.H. Whittaker","G.F. Gause"], a:0, e:"Ramdeo Misra is widely regarded as the father of Indian ecology."},
+
+  /* More PYQ-style additions (so random 16 works well) */
+  {t:"MCQ", d:"Medium", topic:"Genetics", q:"In a dihybrid cross, the phenotypic ratio in F2 generation is:", o:["3:1","9:3:3:1","1:2:1","1:1"], a:1, e:"Independent assortment produces 9:3:3:1 phenotypic ratio."},
+  {t:"MCQ", d:"Easy", topic:"Evolution", q:"Homologous organs indicate:", o:["Convergent evolution","Analogous function","Common ancestry","Same habitat"], a:2, e:"Homologous organs share common ancestry (divergent evolution)."},
+  {t:"MCQ", d:"Medium", topic:"Plant Physiology", q:"Opening and closing of stomata is regulated by:", o:["Guard cells","Epidermal hairs","Xylem vessels","Root cap"], a:0, e:"Guard cells control stomatal aperture via turgor changes."},
+  {t:"MCQ", d:"Hard", topic:"Biotechnology", q:"Enzyme used to cut DNA at specific sites is:", o:["DNA ligase","Restriction endonuclease","Primase","Topoisomerase"], a:1, e:"Restriction endonucleases cut DNA at specific recognition sequences."}
 ];
 
-function shuffle(a){return a.sort(()=>Math.random()-0.5);}
-let TEST = shuffle([...Q]).slice(0,16);
-let answers = Array(TEST.length).fill(null);
-let time = 16*60, timer, started=false;
+/* =======================
+   TEST SETTINGS
+   ======================= */
+var TEST_LEN = 16;
+var TEST_TIME = 16 * 60; // 16 minutes
+var MARKS_CORRECT = 4;
+var MARKS_WRONG = -1;
 
-const left=document.getElementById("left");
-const right=document.getElementById("right");
+/* =======================
+   STATE
+   ======================= */
+var started = false;
+var finished = false;
 
-function render(){
- left.innerHTML=""; right.innerHTML="";
- TEST.forEach((q,i)=>{
-  let card=document.createElement("div");
-  card.className="card";
-  card.id="q"+i;
-  card.innerHTML=`
-   <div class="toprow">
-    <div class="diff ${q.d.toLowerCase()}">${q.d}</div>
-    <div class="type">${q.t}</div>
-   </div>
-   <div class="q">${i+1}. ${q.q}</div>`;
-  q.o.forEach((op,j)=>{
-   let b=document.createElement("button");
-   b.className="opt";
-   b.textContent=String.fromCharCode(65+j)+". "+op;
-   b.onclick=()=>select(i,j);
-   card.appendChild(b);
-  });
-  (i<8?left:right).appendChild(card);
- });
+var timeLeft = TEST_TIME;
+var tick = null;
+
+var TEST = [];                 // chosen 16 questions (random)
+var answers = [];              // selected option index per question (null if unattempted)
+var qTime = [];                // time spent per question (seconds)
+var lastTickMs = null;         // for continuous time tracking
+var currentActive = 0;         // question index currently "active" for time allocation
+
+/* =======================
+   ELEMENTS
+   ======================= */
+var leftCol = document.getElementById("leftCol");
+var rightCol = document.getElementById("rightCol");
+var startBtn = document.getElementById("startBtn");
+var submitBtn = document.getElementById("submitBtn");
+var timerPill = document.getElementById("timerPill");
+var progressPill = document.getElementById("progressPill");
+var statusText = document.getElementById("statusText");
+var lockNote = document.getElementById("lockNote");
+
+var analytics = document.getElementById("analytics");
+var kpis = document.getElementById("kpis");
+var topicTableWrap = document.getElementById("topicTableWrap");
+var topicBars = document.getElementById("topicBars");
+var explanationsBox = document.getElementById("explanations");
+var toggleExplainBtn = document.getElementById("toggleExplainBtn");
+
+/* =======================
+   POPUP
+   ======================= */
+function openPopup(title, text){
+  document.getElementById("popTitle").innerText = title;
+  document.getElementById("popText").innerText = text;
+  document.getElementById("popup").style.display = "block";
 }
+function closePopup(){ document.getElementById("popup").style.display = "none"; }
+document.getElementById("close").onclick = closePopup;
+document.getElementById("popup").onclick = function(e){ if(e.target && e.target.id === "popup") closePopup(); };
 
-function select(i,j){
- if(!started || answers[i]!=null) return;
- answers[i]=j;
+/* =======================
+   HELPERS
+   ======================= */
+function fmtTime(sec){
+  var m = Math.floor(sec/60);
+  var s = sec%60;
+  return String(m).padStart(2,"0")+":"+String(s).padStart(2,"0");
 }
-
-function startTimer(){
- timer=setInterval(()=>{
-  time--;
-  document.getElementById("timer").textContent=
-   "⏱ "+Math.floor(time/60)+":"+String(time%60).padStart(2,"0");
-  if(time<=0) submit();
- },1000);
+function diffClass(d){
+  d = (d||"").toLowerCase();
+  if(d === "easy") return "easy";
+  if(d === "medium") return "medium";
+  if(d === "hard") return "hard";
+  return "medium";
 }
-
-function submit(){
- clearInterval(timer);
- let score=0;
- TEST.forEach((q,i)=>{
-  let opts=document.querySelectorAll("#q"+i+" .opt");
-  opts[q.a].classList.add("correct");
-  if(answers[i]==null) return;
-  if(answers[i]==q.a) score+=4;
-  else{
-    score-=1;
-    opts[answers[i]].classList.add("wrong");
+function shuffleCopy(arr){
+  var a = arr.slice();
+  for(var i=a.length-1;i>0;i--){
+    var j = Math.floor(Math.random()*(i+1));
+    var tmp=a[i]; a[i]=a[j]; a[j]=tmp;
   }
- });
- showPopup("Test Completed","Score: "+score+"\n\nAnswers and explanations are now visible.");
+  return a;
 }
 
-function showPopup(t,txt){
- document.getElementById("popTitle").innerText=t;
- document.getElementById("popText").innerText=txt;
- document.getElementById("popup").style.display="block";
+/* =======================
+   BUILD RANDOM TEST
+   ======================= */
+function buildTest(){
+  var pool = shuffleCopy(BANK);
+  TEST = pool.slice(0, Math.min(TEST_LEN, pool.length));
+  answers = new Array(TEST.length).fill(null);
+  qTime = new Array(TEST.length).fill(0);
+  currentActive = 0;
 }
-document.getElementById("close").onclick=()=>document.getElementById("popup").style.display="none";
-document.getElementById("popup").onclick=e=>{if(e.target.id==="popup")close();};
 
-document.getElementById("startBtn").onclick=()=>{
- started=true;
- document.getElementById("submitBtn").disabled=false;
- startTimer();
+/* =======================
+   TIME TRACKING
+   We allocate "elapsed time" continuously to the currently active question.
+   Active question changes when user clicks an option row or clicks on a question card.
+   ======================= */
+function timeTick(){
+  var now = Date.now();
+  if(lastTickMs === null) lastTickMs = now;
+  var deltaSec = (now - lastTickMs) / 1000;
+  lastTickMs = now;
+
+  // add time to current active question
+  if(currentActive >= 0 && currentActive < qTime.length){
+    qTime[currentActive] += deltaSec;
+  }
+}
+function setActiveQuestion(i){
+  // before switching, account time until now
+  timeTick();
+  currentActive = i;
+}
+
+/* =======================
+   RENDER 16: 8 left + 8 right
+   ======================= */
+function render(){
+  leftCol.innerHTML = "";
+  rightCol.innerHTML = "";
+
+  for(var i=0;i<TEST.length;i++){
+    var target = (i < 8) ? leftCol : rightCol;
+
+    var card = document.createElement("div");
+    card.className = "card";
+    card.id = "q_" + i;
+
+    // Clicking the card sets it active for time allocation
+    card.onclick = (function(idx){
+      return function(){ if(started && !finished) setActiveQuestion(idx); };
+    })(i);
+
+    var top = document.createElement("div");
+    top.className = "toprow";
+
+    var diff = document.createElement("div");
+    diff.className = "diff " + diffClass(TEST[i].d);
+    diff.innerText = TEST[i].d;
+
+    var typeB = document.createElement("div");
+    typeB.className = "typeBadge";
+    typeB.innerText = TEST[i].t;
+
+    var topicB = document.createElement("div");
+    topicB.className = "topicBadge";
+    topicB.innerText = TEST[i].topic || "General";
+
+    top.appendChild(diff);
+    top.appendChild(typeB);
+    top.appendChild(topicB);
+
+    var ques = document.createElement("div");
+    ques.className = "q";
+    ques.innerText = (i+1) + ". " + TEST[i].q;
+
+    card.appendChild(top);
+    card.appendChild(ques);
+
+    // options
+    for(var j=0;j<TEST[i].o.length;j++){
+      var row = document.createElement("div");
+      row.className = "optRow";
+      row.dataset.qi = i;
+      row.dataset.oi = j;
+
+      // lock during pre-test and after finish
+      if(!started || finished) row.style.pointerEvents = "none";
+
+      var box = document.createElement("div");
+      box.className = "tickBox";
+
+      var text = document.createElement("div");
+      text.className = "optText";
+      text.innerText = String.fromCharCode(65+j) + ". " + TEST[i].o[j];
+
+      row.appendChild(box);
+      row.appendChild(text);
+
+      row.onclick = (function(qIndex, optIndex){
+        return function(e){
+          e.stopPropagation();
+          if(!started || finished) return;
+
+          setActiveQuestion(qIndex);
+
+          // only first attempt allowed
+          if(answers[qIndex] !== null) return;
+
+          answers[qIndex] = optIndex;
+
+          // add chosen style
+          var cardEl = document.getElementById("q_" + qIndex);
+          var allRows = cardEl.querySelectorAll(".optRow");
+          for(var k=0;k<allRows.length;k++){
+            allRows[k].classList.remove("chosen");
+            allRows[k].style.pointerEvents = "none"; // lock after attempt
+          }
+          allRows[optIndex].classList.add("chosen");
+
+          updateProgress();
+        };
+      })(i, j);
+
+      // restore chosen state on re-render (not required but safe)
+      if(answers[i] !== null && answers[i] === j){
+        row.classList.add("chosen");
+      }
+
+      card.appendChild(row);
+    }
+
+    var tools = document.createElement("div");
+    tools.className = "tools";
+    var note = document.createElement("span");
+    note.className = "smallNote";
+    note.innerText = "No hints/explanations during test. Results after submit.";
+    tools.appendChild(note);
+    card.appendChild(tools);
+
+    target.appendChild(card);
+  }
+
+  statusText.innerHTML = started
+    ? "Test running. Mark your answers, then click <b>Submit Test</b>."
+    : "Ready. Click <b>Begin Test</b> to start.";
+}
+
+function updateProgress(){
+  var attempted = answers.filter(function(x){ return x !== null; }).length;
+  progressPill.innerText = "Attempted: " + attempted + "/" + TEST.length;
+}
+
+/* =======================
+   TIMER
+   ======================= */
+function startTimer(){
+  timerPill.innerText = "⏱ " + fmtTime(timeLeft);
+  lastTickMs = Date.now();
+  tick = setInterval(function(){
+    timeTick(); // allocate time continuously
+    timeLeft--;
+    timerPill.innerText = "⏱ " + fmtTime(Math.max(0,timeLeft));
+    if(timeLeft <= 0){
+      finishTest(true);
+    }
+  }, 1000);
+}
+function stopTimer(){
+  if(tick){ clearInterval(tick); tick = null; }
+}
+
+/* =======================
+   SUBMIT + MARKING
+   ======================= */
+function finishTest(auto){
+  if(finished) return;
+
+  // last time allocation
+  timeTick();
+
+  finished = true;
+  stopTimer();
+  submitBtn.disabled = true;
+  lockNote.innerText = auto ? "Time up! Auto-submitted." : "Test submitted.";
+
+  // marking
+  var correct=0, wrong=0, unattempted=0;
+  var score = 0;
+
+  // topic stats
+  var topicStats = {}; // {topic:{correct,wrong,unattempted,attempted,total,time}}
+  function ensureTopic(t){
+    if(!topicStats[t]){
+      topicStats[t] = {correct:0, wrong:0, unattempted:0, attempted:0, total:0, time:0};
+    }
+  }
+
+  for(var i=0;i<TEST.length;i++){
+    var t = TEST[i].topic || "General";
+    ensureTopic(t);
+    topicStats[t].total += 1;
+    topicStats[t].time += qTime[i];
+
+    var cardEl = document.getElementById("q_" + i);
+    var rows = cardEl.querySelectorAll(".optRow");
+
+    // unlock pointer events irrelevant; keep locked
+    for(var r=0;r<rows.length;r++){
+      rows[r].style.pointerEvents = "none";
+    }
+
+    var sel = answers[i];
+    if(sel === null){
+      unattempted++;
+      topicStats[t].unattempted++;
+      // show correct option (tick stays empty; but highlight correct text)
+      rows[TEST[i].a].classList.add("correct");
+    }else if(sel === TEST[i].a){
+      correct++;
+      score += MARKS_CORRECT;
+      topicStats[t].attempted++;
+      topicStats[t].correct++;
+      rows[sel].classList.add("correct");
+      rows[sel].classList.add("chosen");
+    }else{
+      wrong++;
+      score += MARKS_WRONG;
+      topicStats[t].attempted++;
+      topicStats[t].wrong++;
+      rows[sel].classList.add("wrong");
+      rows[sel].classList.add("chosen");
+      rows[TEST[i].a].classList.add("correct");
+    }
+  }
+
+  var accuracy = (correct / TEST.length) * 100;
+
+  openPopup(
+    "Test Result",
+    (auto ? "Time up. Auto-submitted.\n\n" : "") +
+    "Score: " + score + "\n" +
+    "Correct: " + correct + " (+" + MARKS_CORRECT + " each)\n" +
+    "Wrong: " + wrong + " (" + MARKS_WRONG + " each)\n" +
+    "Unattempted: " + unattempted + "\n" +
+    "Accuracy: " + accuracy.toFixed(1) + "%\n"
+  );
+
+  // show analytics panels
+  renderAnalytics(score, correct, wrong, unattempted, accuracy, topicStats);
+}
+
+/* =======================
+   ANALYTICS UI
+   ======================= */
+function renderAnalytics(score, correct, wrong, unattempted, accuracy, topicStats){
+  analytics.style.display = "block";
+
+  // KPIs
+  kpis.innerHTML = "";
+  function addKpi(label, value){
+    var d = document.createElement("div");
+    d.className = "kpi";
+    d.innerHTML = '<div class="label">'+label+'</div><div class="value">'+value+'</div>';
+    kpis.appendChild(d);
+  }
+  addKpi("Score", score);
+  addKpi("Correct", correct);
+  addKpi("Wrong", wrong);
+  addKpi("Unattempted", unattempted);
+  addKpi("Accuracy", accuracy.toFixed(1) + "%");
+  addKpi("Time Used", fmtTime(TEST_TIME - timeLeft));
+
+  // Topic table
+  var topics = Object.keys(topicStats);
+  topics.sort();
+
+  var html = '<table><thead><tr>' +
+    '<th>Topic</th><th>Correct</th><th>Wrong</th><th>Unattempted</th><th>Accuracy</th><th>Time</th>' +
+    '</tr></thead><tbody>';
+
+  for(var i=0;i<topics.length;i++){
+    var t = topics[i];
+    var s = topicStats[t];
+    var denom = s.total;
+    var acc = denom ? (s.correct/denom*100) : 0;
+    html += '<tr>' +
+      '<td><b>'+t+'</b></td>' +
+      '<td>'+s.correct+'</td>' +
+      '<td>'+s.wrong+'</td>' +
+      '<td>'+s.unattempted+'</td>' +
+      '<td>'+acc.toFixed(1)+'%</td>' +
+      '<td>'+fmtTime(Math.round(s.time))+'</td>' +
+    '</tr>';
+  }
+  html += '</tbody></table>';
+  topicTableWrap.innerHTML = html;
+
+  // Time bars per topic
+  topicBars.innerHTML = "";
+  var maxTime = 0;
+  for(var j=0;j<topics.length;j++){
+    maxTime = Math.max(maxTime, topicStats[topics[j]].time);
+  }
+  if(maxTime < 1) maxTime = 1;
+
+  for(var k=0;k<topics.length;k++){
+    var tp = topics[k];
+    var tm = topicStats[tp].time;
+    var pct = (tm / maxTime) * 100;
+
+    var row = document.createElement("div");
+    row.className = "barRow";
+
+    var lab = document.createElement("div");
+    lab.className = "barLabel";
+    lab.innerText = tp;
+
+    var track = document.createElement("div");
+    track.className = "barTrack";
+
+    var fill = document.createElement("div");
+    fill.className = "barFill";
+    fill.style.width = pct.toFixed(1) + "%";
+
+    track.appendChild(fill);
+
+    var val = document.createElement("div");
+    val.className = "barVal";
+    val.innerText = fmtTime(Math.round(tm));
+
+    row.appendChild(lab);
+    row.appendChild(track);
+    row.appendChild(val);
+
+    topicBars.appendChild(row);
+  }
+
+  // Explanations (hidden by default)
+  explanationsBox.innerHTML = "";
+  for(var qi=0; qi<TEST.length; qi++){
+    var q = TEST[qi];
+    var correctText = "Correct: " + String.fromCharCode(65+q.a) + ". " + q.o[q.a];
+
+    var item = document.createElement("div");
+    item.className = "expItem";
+
+    var qd = document.createElement("div");
+    qd.className = "expQ";
+    qd.innerText = (qi+1)+". "+q.q;
+
+    var ad = document.createElement("div");
+    ad.className = "expA";
+    ad.innerText = correctText;
+
+    var ed = document.createElement("div");
+    ed.className = "expText";
+    ed.innerText = q.e || "Explanation will be added later.";
+
+    item.appendChild(qd);
+    item.appendChild(ad);
+    item.appendChild(ed);
+    explanationsBox.appendChild(item);
+  }
+}
+
+/* Toggle explanations */
+toggleExplainBtn.onclick = function(){
+  var show = explanationsBox.style.display !== "block";
+  explanationsBox.style.display = show ? "block" : "none";
+  toggleExplainBtn.innerText = show ? "Hide Explanations" : "Show Explanations";
 };
 
-document.getElementById("submitBtn").onclick=submit;
+/* =======================
+   CONTROLS
+   ======================= */
+startBtn.onclick = function(){
+  if(started) return;
 
-render();
+  buildTest();
+  render();
+  updateProgress();
+
+  started = true;
+  finished = false;
+  timeLeft = TEST_TIME;
+
+  startBtn.disabled = true;
+  submitBtn.disabled = false;
+  lockNote.innerText = "Test is live. Timer running. No hints now.";
+
+  // enable option clicks by re-render after started
+  render();
+  startTimer();
+};
+
+submitBtn.onclick = function(){
+  finishTest(false);
+};
+
+/* =======================
+   INIT
+   ======================= */
+function init(){
+  buildTest();            // pre-build so layout shows 16 questions (locked)
+  render();
+  updateProgress();
+  timerPill.innerText = "⏱ " + fmtTime(TEST_TIME);
+  statusText.innerHTML = "Ready. Click <b>Begin Test</b> to start.";
+}
+init();
 </script>
 
 </body>
