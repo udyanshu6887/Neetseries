@@ -1,112 +1,158 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Neetseries</title>
 
 <style>
-  body{ margin:0; background:#fff; font-family:Arial, sans-serif; color:#111; }
-  header{ text-align:center; padding:22px 12px 10px; }
-  header h1{ margin:0; font-family:"Times New Roman", Times, serif; font-size:44px; font-weight:700; }
-  .subfoot{ margin-top:6px; font-size:14px; color:#555; text-transform:lowercase; }
+body{
+  margin:0;
+  background:#fff;
+  font-family:Arial, sans-serif;
+  color:#111;
+}
 
-  .quoteWrap{ max-width:900px; margin:10px auto 10px; padding:0 14px; text-align:center; }
-  .quote{ font-family:"Times New Roman", Times, serif; font-size:18px; line-height:1.55; color:#444; margin:16px 0 0; }
-  .by{ display:block; margin-top:10px; font-size:14px; color:#666; }
+header{
+  text-align:center;
+  padding:24px 10px 10px;
+}
+header h1{
+  margin:0;
+  font-family:"Times New Roman", Times, serif;
+  font-size:44px;
+}
+.subfoot{
+  margin-top:6px;
+  font-size:14px;
+  color:#666;
+  text-transform:lowercase;
+}
 
-  .status{
-    max-width:900px;
-    margin:14px auto 8px;
-    padding:10px 14px;
-    font-size:13px;
-    color:#444;
-    border-top:1px solid #eee;
-    border-bottom:1px solid #eee;
-  }
+.quote{
+  max-width:900px;
+  margin:12px auto 20px;
+  text-align:center;
+  font-family:"Times New Roman", Times, serif;
+  font-size:18px;
+  color:#444;
+}
+.quote span{
+  display:block;
+  margin-top:8px;
+  font-size:14px;
+  color:#666;
+}
 
-  .container{ max-width:900px; margin:auto; padding:10px 14px 40px; }
-  .card{ padding:16px 6px; border-bottom:1px solid #e6e6e6; }
+.controls{
+  max-width:900px;
+  margin:0 auto 12px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:0 12px;
+}
 
-  .toprow{ display:flex; align-items:center; gap:10px; margin-bottom:10px; }
+button{
+  padding:8px 16px;
+  border:none;
+  border-radius:6px;
+  cursor:pointer;
+  font-weight:600;
+}
+#startBtn{ background:#2563eb; color:#fff; }
+#submitBtn{ background:#16a34a; color:#fff; }
+#submitBtn:disabled{ background:#9ca3af; cursor:not-allowed; }
 
-  /* Difficulty badge base */
-  .diff{
-    font-size:12px;
-    padding:3px 10px;
-    border-radius:999px;
-    border:1px solid transparent;
-    font-weight:600;
-  }
-  /* Difficulty colors */
-  .easy{ background:#e9f9ef; color:#166534; border-color:#bbf7d0; }
-  .medium{ background:#fff7ed; color:#9a3412; border-color:#fed7aa; }
-  .hard{ background:#fef2f2; color:#991b1b; border-color:#fecaca; }
+#timer{
+  font-weight:700;
+  font-size:16px;
+}
 
-  /* Type badge */
-  .typeBadge{
-    font-size:12px;
-    padding:3px 10px;
-    border-radius:999px;
-    background:#f3f4f6;
-    color:#374151;
-    border:1px solid #e5e7eb;
-    font-weight:600;
-  }
+.exam{
+  max-width:900px;
+  margin:auto;
+  display:flex;
+  gap:20px;
+  padding:10px 12px 40px;
+}
+.column{
+  width:50%;
+  border-right:1px solid #ddd;
+  padding-right:12px;
+}
+.column:last-child{
+  border-right:none;
+  padding-left:12px;
+}
 
-  /* Bookmark star */
-  .bm{
-    margin-left:auto;
-    cursor:pointer;
-    user-select:none;
-    font-size:20px;
-    line-height:1;
-  }
-  .bm.off{ color:#9ca3af; }
-  .bm.on{ color:#f59e0b; } /* amber */
+.card{
+  padding:12px 4px;
+  border-bottom:1px solid #e5e7eb;
+}
 
-  .q{ font-weight:700; margin:0 0 10px; line-height:1.35; white-space:pre-line; }
+.toprow{
+  display:flex;
+  gap:8px;
+  margin-bottom:6px;
+}
 
-  .opt{
-    display:block; width:100%;
-    background:none; border:none;
-    padding:6px 0; margin:4px 0;
-    color:#0b63c9; cursor:pointer;
-    text-align:left; font-size:15px;
-  }
-  .opt:hover{ text-decoration:underline; }
+.diff{
+  font-size:12px;
+  padding:2px 10px;
+  border-radius:999px;
+  font-weight:600;
+}
+.easy{ background:#dcfce7; color:#166534; }
+.medium{ background:#ffedd5; color:#9a3412; }
+.hard{ background:#fee2e2; color:#991b1b; }
 
-  .correct{ color:green !important; font-weight:700; text-decoration:none !important; }
-  .wrong{ color:red !important; font-weight:700; text-decoration:none !important; }
+.type{
+  font-size:12px;
+  padding:2px 10px;
+  border-radius:999px;
+  background:#f3f4f6;
+}
 
-  .tools{ margin-top:10px; font-size:13px; color:#444; display:flex; gap:16px; align-items:center; }
-  .toolBtn{ cursor:pointer; user-select:none; display:inline-flex; align-items:center; gap:6px; }
-  .toolBtn:hover{ text-decoration:underline; }
-  .smallNote{ color:#777; cursor:default; }
+.q{
+  font-weight:700;
+  margin-bottom:6px;
+  white-space:pre-line;
+}
 
-  #popup{
-    display:none;
-    position:fixed; left:0; top:0; right:0; bottom:0;
-    background:rgba(0,0,0,0.55);
-    padding:16px;
-    z-index:9999;
-  }
-  #popBox{
-    background:#fff;
-    max-width:560px;
-    margin:12% auto;
-    padding:16px;
-    border-radius:10px;
-    box-shadow:0 12px 30px rgba(0,0,0,0.25);
-  }
-  #close{
-    float:right; cursor:pointer; font-size:13px;
-    border:1px solid #ddd; background:#fafafa;
-    padding:6px 10px; border-radius:8px;
-  }
-  #popTitle{ margin:0 0 8px; font-size:16px; }
-  #popText{ margin:0; font-size:14px; line-height:1.45; color:#222; white-space:pre-line; }
-  .muted{ margin-top:10px; font-size:12px; color:#666; }
+.opt{
+  display:block;
+  background:none;
+  border:none;
+  padding:4px 0;
+  cursor:pointer;
+  color:#1d4ed8;
+  text-align:left;
+}
+.opt:hover{ text-decoration:underline; }
+
+.correct{ color:green; font-weight:700; }
+.wrong{ color:red; font-weight:700; }
+
+#popup{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.6);
+}
+#popbox{
+  background:#fff;
+  max-width:520px;
+  margin:12% auto;
+  padding:16px;
+  border-radius:10px;
+}
+#close{
+  float:right;
+  cursor:pointer;
+  font-size:13px;
+  color:#555;
+}
 </style>
 </head>
 
@@ -117,186 +163,120 @@
   <div class="subfoot">an atcg publication</div>
 </header>
 
-<div class="quoteWrap">
-  <div class="quote">
-    "Its not that Im so smart, its just that I stay with problems longer."
-    <span class="by">- Albert Einstein</span>
-  </div>
+<div class="quote">
+  “It’s not that I’m so smart, it’s just that I stay with problems longer.”
+  <span>— Albert Einstein</span>
 </div>
 
-<div class="status" id="statusLine">JS not running (if this text does not change after you press Run, JS is not executing)</div>
+<div class="controls">
+  <button id="startBtn">Begin Test</button>
+  <div id="timer">⏱ 16:00</div>
+  <button id="submitBtn" disabled>Submit</button>
+</div>
 
-<div class="container" id="quiz"></div>
+<div class="exam">
+  <div class="column" id="left"></div>
+  <div class="column" id="right"></div>
+</div>
 
 <div id="popup">
-  <div id="popBox">
+  <div id="popbox">
     <span id="close">Close</span>
     <h3 id="popTitle"></h3>
     <p id="popText"></p>
-    <div class="muted">Tap outside the box to close.</div>
   </div>
 </div>
 
 <script>
-var Q = [
-  {t:"MCQ",d:"Easy",q:"Powerhouse of the cell is:",o:["Ribosome","Mitochondria","Golgi body","Lysosome"],a:1,h:"ATP production organelle.",e:"Mitochondria makes ATP, hence powerhouse."},
-  {t:"MCQ",d:"Medium",q:"DNA replication occurs during:",o:["G1 phase","S phase","G2 phase","M phase"],a:1,h:"Interphase stage.",e:"S phase is the synthesis phase for DNA replication."},
-  {t:"MCQ",d:"Easy",q:"Vitamin C deficiency causes:",o:["Rickets","Beriberi","Scurvy","Night blindness"],a:2,h:"Collagen related disease.",e:"Vitamin C deficiency reduces collagen synthesis and causes scurvy."},
-  {t:"MCQ",d:"Easy",q:"Xylem transports:",o:["Sugars","Water and minerals","Amino acids","Hormones"],a:1,h:"Upward transport.",e:"Xylem carries water and minerals from roots to aerial parts."},
-  {t:"MCQ",d:"Medium",q:"Site of fertilization in humans is usually:",o:["Uterus","Ampulla of oviduct","Cervix","Vagina"],a:1,h:"Ampullary region.",e:"Fertilization commonly occurs in the ampulla of the fallopian tube."},
-  {t:"MCQ",d:"Medium",q:"Insulin is secreted by:",o:["Alpha cells","Beta cells","Adrenal cortex","Thyroid"],a:1,h:"Islets of Langerhans.",e:"Beta cells of pancreas secrete insulin."},
-  {t:"MCQ",d:"Easy",q:"Oxygen released in photosynthesis comes from:",o:["CO2","Water","Glucose","Chlorophyll"],a:1,h:"Photolysis source.",e:"O2 is produced by splitting of water in light reaction."},
-  {t:"MCQ",d:"Hard",q:"Retrovirus enzyme for RNA to DNA is:",o:["Ligase","Reverse transcriptase","RNA polymerase","Helicase"],a:1,h:"RNA to DNA conversion.",e:"Reverse transcriptase synthesizes DNA using RNA template."},
-  {t:"MCQ",d:"Medium",q:"Functional unit of kidney is:",o:["Neuron","Nephron","Alveolus","Hepatocyte"],a:1,h:"Filters blood.",e:"Nephron is the structural and functional unit of kidney."},
-  {t:"MCQ",d:"Easy",q:"Best universal donor blood group:",o:["A+","B+","AB+","O-"],a:3,h:"No A/B antigens and Rh negative.",e:"O- lacks A/B and Rh antigens, safest universal donor."},
-
-  {t:"A/R",d:"Medium",q:"Assertion (A): Human heart is myogenic.\nReason (R): Heartbeat originates from SA node.",
-   o:["Both A and R are true and R is the correct explanation of A","Both A and R are true but R is not the correct explanation of A","A is true but R is false","A is false but R is true"],
-   a:0,h:"Pacemaker initiates impulse.",e:"SA node generates impulse; hence heart is myogenic. R explains A."},
-
-  {t:"A/R",d:"Easy",q:"Assertion (A): Plasma cells secrete antibodies.\nReason (R): Plasma cells are differentiated B-lymphocytes.",
-   o:["Both A and R are true and R is the correct explanation of A","Both A and R are true but R is not the correct explanation of A","A is true but R is false","A is false but R is true"],
-   a:0,h:"B-cells differentiate into plasma cells.",e:"Plasma cells (from B-cells) secrete antibodies. R explains A."},
-
-  {t:"MCQ",d:"Easy",q:"Ribosomes are involved in:",o:["Lipid synthesis","Protein synthesis","Photosynthesis","DNA replication"],a:1,h:"Translation site.",e:"Ribosomes perform protein synthesis."},
-  {t:"MCQ",d:"Medium",q:"Lysosomes contain:",o:["Pigments","Hydrolytic enzymes","DNA polymerase","Starch"],a:1,h:"Digestive vesicles.",e:"Lysosomes contain hydrolytic enzymes for intracellular digestion."},
-  {t:"MCQ",d:"Easy",q:"Oxytocin is mainly for:",o:["Milk synthesis","Milk ejection","Thyroid function","Spermatogenesis"],a:1,h:"Ejection reflex.",e:"Oxytocin causes milk ejection by myoepithelial contraction."},
-  {t:"MCQ",d:"Medium",q:"Initial CO2 fixation in C4 plants is by:",o:["Rubisco","PEP carboxylase","ATP synthase","Catalase"],a:1,h:"First enzyme in mesophyll.",e:"PEP carboxylase fixes CO2 first in C4 pathway."},
-  {t:"MCQ",d:"Medium",q:"Brain part controlling respiration and heartbeat:",o:["Cerebrum","Cerebellum","Medulla oblongata","Thalamus"],a:2,h:"Brainstem region.",e:"Medulla oblongata regulates vital autonomic functions."},
-  {t:"MCQ",d:"Easy",q:"Antibodies are produced by:",o:["T-cells","Plasma cells","RBCs","Platelets"],a:1,h:"Differentiated B-cells.",e:"Plasma cells secrete antibodies."},
-
-  {t:"A/R",d:"Hard",q:"Assertion (A): Photorespiration reduces photosynthetic efficiency.\nReason (R): RuBisCO can bind O2 and initiate glycolate pathway.",
-   o:["Both A and R are true and R is the correct explanation of A","Both A and R are true but R is not the correct explanation of A","A is true but R is false","A is false but R is true"],
-   a:0,h:"RuBisCO has dual activity.",e:"RuBisCO oxygenase causes photorespiration which wastes energy. R explains A."},
-
-  {t:"MCQ",d:"Easy",q:"Cell membrane is mainly:",o:["Cellulose","Phospholipid bilayer","Starch","Chitin"],a:1,h:"Fluid mosaic.",e:"Cell membrane is a phospholipid bilayer with proteins."},
-  {t:"MCQ",d:"Easy",q:"Which of the followin is organism responsible for creation of curd from milk:",o:["LAB","E.Coli","P.Notatum","T.Polysporum"],a:0,h:"Factual.",e:"breaks down milk protein"},
-  
-
- 
+const Q = [
+ {t:"MCQ",d:"Easy",q:"Powerhouse of the cell is:",o:["Ribosome","Mitochondria","Golgi body","Lysosome"],a:1,e:"ATP production"},
+ {t:"MCQ",d:"Medium",q:"DNA replication occurs during:",o:["G1","S","G2","M"],a:1,e:"S phase"},
+ {t:"MCQ",d:"Easy",q:"Vitamin C deficiency causes:",o:["Rickets","Beriberi","Scurvy","Night blindness"],a:2,e:"Scurvy"},
+ {t:"MCQ",d:"Medium",q:"Functional unit of kidney:",o:["Neuron","Nephron","Alveolus","Hepatocyte"],a:1,e:"Nephron"},
+ {t:"A/R",d:"Medium",q:"Assertion: Heart is myogenic\nReason: SA node initiates impulse",
+  o:["Both true and R explains A","Both true but R doesn't","A true R false","A false R true"],a:0,e:"SA node causes myogenic beat"},
+ {t:"MCQ",d:"Easy",q:"Oxygen in photosynthesis comes from:",o:["CO2","Water","Glucose","Chlorophyll"],a:1,e:"Photolysis"},
+ {t:"A/R",d:"Hard",q:"Assertion: Photorespiration reduces yield\nReason: RuBisCO binds O2",
+  o:["Both true and R explains A","Both true but R doesn't","A true R false","A false R true"],a:0,e:"Oxygenase activity"},
+ {t:"MCQ",d:"Easy",q:"Cell membrane is:",o:["Cellulose","Phospholipid bilayer","Starch","Chitin"],a:1,e:"Fluid mosaic"}
 ];
 
-function openPopup(title, text){
-  document.getElementById("popTitle").innerText = title;
-  document.getElementById("popText").innerText = text;
-  document.getElementById("popup").style.display = "block";
-}
-function closePopup(){ document.getElementById("popup").style.display = "none"; }
-document.getElementById("close").onclick = closePopup;
-document.getElementById("popup").onclick = function(e){ if(e.target && e.target.id === "popup") closePopup(); };
+function shuffle(a){return a.sort(()=>Math.random()-0.5);}
+let TEST = shuffle([...Q]).slice(0,16);
+let answers = Array(TEST.length).fill(null);
+let time = 16*60, timer, started=false;
 
-function getBM(){
-  var s = "";
-  try { s = localStorage.getItem("neet_bm"); } catch(err){ s=""; }
-  if(!s) return {};
-  try { return JSON.parse(s); } catch(e){ return {}; }
-}
-function setBM(obj){
-  try { localStorage.setItem("neet_bm", JSON.stringify(obj)); } catch(err){}
-}
-var BM = getBM();
-
-function diffClass(d){
-  d = (d||"").toLowerCase();
-  if(d === "easy") return "easy";
-  if(d === "medium") return "medium";
-  if(d === "hard") return "hard";
-  return "medium";
-}
-
-var quiz = document.getElementById("quiz");
+const left=document.getElementById("left");
+const right=document.getElementById("right");
 
 function render(){
-  quiz.innerHTML = "";
-  for(var i=0;i<Q.length;i++){
-    var card = document.createElement("div");
-    card.className = "card";
-    card.id = "q_" + i;
-
-    var top = document.createElement("div");
-    top.className = "toprow";
-
-    var diff = document.createElement("div");
-    diff.className = "diff " + diffClass(Q[i].d);
-    diff.innerText = Q[i].d;
-
-    var typeB = document.createElement("div");
-    typeB.className = "typeBadge";
-    typeB.innerText = Q[i].t;
-
-    var bm = document.createElement("div");
-    bm.className = "bm " + (BM[i] ? "on" : "off");
-    bm.innerText = BM[i] ? "★" : "☆";
-    bm.title = "Bookmark";
-
-    bm.onclick = (function(index, el){
-      return function(){
-        BM[index] = !BM[index];
-        setBM(BM);
-        el.className = "bm " + (BM[index] ? "on" : "off");
-        el.innerText = BM[index] ? "★" : "☆";
-      };
-    })(i, bm);
-
-    top.appendChild(diff);
-    top.appendChild(typeB);
-    top.appendChild(bm);
-
-    var ques = document.createElement("div");
-    ques.className = "q";
-    ques.innerText = (i+1) + ". " + Q[i].q;
-
-    card.appendChild(top);
-    card.appendChild(ques);
-
-    for(var j=0;j<Q[i].o.length;j++){
-      var btn = document.createElement("button");
-      btn.className = "opt";
-      btn.type = "button";
-      btn.innerText = String.fromCharCode(65+j) + ". " + Q[i].o[j];
-
-      btn.onclick = (function(qIndex, optIndex, button){
-        return function(){
-          var cardEl = document.getElementById("q_" + qIndex);
-          var all = cardEl.querySelectorAll(".opt");
-          for(var k=0;k<all.length;k++) all[k].disabled = true;
-
-          if(optIndex === Q[qIndex].a){
-            button.classList.add("correct");
-          } else {
-            button.classList.add("wrong");
-            if(all[Q[qIndex].a]) all[Q[qIndex].a].classList.add("correct");
-            openPopup("Wrong answer - Explanation", Q[qIndex].e);
-          }
-        };
-      })(i, j, btn);
-
-      card.appendChild(btn);
-    }
-
-    var tools = document.createElement("div");
-    tools.className = "tools";
-
-    var hintBtn = document.createElement("span");
-    hintBtn.className = "toolBtn";
-    hintBtn.innerText = "💡 Hint";
-    hintBtn.onclick = (function(index){
-      return function(){ openPopup("Hint", Q[index].h); };
-    })(i);
-
-    var note = document.createElement("span");
-    note.className = "smallNote";
-    note.innerText = "Explanation pops up if wrong";
-
-tools.appendChild(hintBtn);
-    tools.appendChild(note);
-
-    card.appendChild(tools);
-    quiz.appendChild(card);
-  }
-
-  document.getElementById("statusLine").innerText = "Loaded " + Q.length + " questions OK";
+ left.innerHTML=""; right.innerHTML="";
+ TEST.forEach((q,i)=>{
+  let card=document.createElement("div");
+  card.className="card";
+  card.id="q"+i;
+  card.innerHTML=`
+   <div class="toprow">
+    <div class="diff ${q.d.toLowerCase()}">${q.d}</div>
+    <div class="type">${q.t}</div>
+   </div>
+   <div class="q">${i+1}. ${q.q}</div>`;
+  q.o.forEach((op,j)=>{
+   let b=document.createElement("button");
+   b.className="opt";
+   b.textContent=String.fromCharCode(65+j)+". "+op;
+   b.onclick=()=>select(i,j);
+   card.appendChild(b);
+  });
+  (i<8?left:right).appendChild(card);
+ });
 }
+
+function select(i,j){
+ if(!started || answers[i]!=null) return;
+ answers[i]=j;
+}
+
+function startTimer(){
+ timer=setInterval(()=>{
+  time--;
+  document.getElementById("timer").textContent=
+   "⏱ "+Math.floor(time/60)+":"+String(time%60).padStart(2,"0");
+  if(time<=0) submit();
+ },1000);
+}
+
+function submit(){
+ clearInterval(timer);
+ let score=0;
+ TEST.forEach((q,i)=>{
+  let opts=document.querySelectorAll("#q"+i+" .opt");
+  opts[q.a].classList.add("correct");
+  if(answers[i]==null) return;
+  if(answers[i]==q.a) score+=4;
+  else{
+    score-=1;
+    opts[answers[i]].classList.add("wrong");
+  }
+ });
+ showPopup("Test Completed","Score: "+score+"\n\nAnswers and explanations are now visible.");
+}
+
+function showPopup(t,txt){
+ document.getElementById("popTitle").innerText=t;
+ document.getElementById("popText").innerText=txt;
+ document.getElementById("popup").style.display="block";
+}
+document.getElementById("close").onclick=()=>document.getElementById("popup").style.display="none";
+document.getElementById("popup").onclick=e=>{if(e.target.id==="popup")close();};
+
+document.getElementById("startBtn").onclick=()=>{
+ started=true;
+ document.getElementById("submitBtn").disabled=false;
+ startTimer();
+};
+
+document.getElementById("submitBtn").onclick=submit;
 
 render();
 </script>
