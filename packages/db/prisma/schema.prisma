@@ -1,0 +1,176 @@
+// ──────────────────────────────────────
+// Prisma Schema for Mirai
+// ──────────────────────────────────────
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["postgresqlExtensions", "driverAdapters"]
+}
+
+datasource db {
+  provider   = "postgresql"
+  extensions = [vector]
+}
+
+// ──────────────────────────────────────
+// User Model
+// ──────────────────────────────────────
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  name         String
+  role         String   @default("STUDENT")
+  verified     Boolean  @default(false)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  // Relations
+  questions    Question[]
+  tests        Test[]
+  attempts     Attempt[]
+
+  @@map("users")
+}
+
+// ──────────────────────────────────────
+// Question Model (Independent Question Bank)
+// ──────────────────────────────────────
+
+model Question {
+  id             String   @id @default(cuid())
+  type           String                        // MCQ, NUMERICAL, SUBJECTIVE, ASSERTION_REASON
+  text           String
+  options        Json?                          // MCQ options as JSON array
+  correctAnswer  String?                        // numerical answer or model answer
+  marks          Float    @default(4)
+  negativeMarks  Float    @default(1)
+  topic          String
+  difficulty     String   @default("MEDIUM")    // EASY, MEDIUM, HARD
+  explanation    String?
+
+  // CSV Import Fields
+  year            Int?
+  subject         String?
+  chapter         String?
+  hint            String?
+  timeExpectedSec Int?
+
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  // Relations
+  createdBy      User     @relation(fields: [createdById], references: [id])
+  createdById    String
+  testQuestions  TestQuestion[]
+  answers        Answer[]
+
+  @@map("questions")
+}
+
+// ──────────────────────────────────────
+// System Configuration (Global settings)
+// ──────────────────────────────────────
+
+model SystemConfig {
+  key   String @id
+  value String
+
+  @@map("system_config")
+}
+
+// ──────────────────────────────────────
+// Test Model
+// ──────────────────────────────────────
+
+model Test {
+  id                  String   @id @default(cuid())
+  title               String
+  description         String?
+  duration            Int                          // in seconds
+  leaderboardVisible  Boolean  @default(false)
+  evaluationType      String   @default("AUTO")    // AUTO, MANUAL, HYBRID
+  isPublished         Boolean  @default(false)
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+
+  // Relations
+  createdBy           User     @relation(fields: [createdById], references: [id])
+  createdById         String
+  testQuestions       TestQuestion[]
+  attempts            Attempt[]
+
+  @@map("tests")
+}
+
+// ──────────────────────────────────────
+// TestQuestion — Links questions to tests
+// ──────────────────────────────────────
+
+model TestQuestion {
+  id                  String   @id @default(cuid())
+  order               Int
+  customMarks         Float?
+  customNegativeMarks Float?
+
+  // Relations
+  test                Test     @relation(fields: [testId], references: [id])
+  testId              String
+  question            Question @relation(fields: [questionId], references: [id])
+  questionId          String
+
+  // A question can only appear once in a test
+  @@unique([testId, questionId])
+  @@map("test_questions")
+}
+
+// ──────────────────────────────────────
+// Attempt — A student's test session
+// ──────────────────────────────────────
+
+model Attempt {
+  id                String   @id @default(cuid())
+  status            String   @default("IN_PROGRESS")   // IN_PROGRESS, SUBMITTED, ABANDONED
+  evaluationStatus  String   @default("PENDING")        // PENDING, IN_REVIEW, EVALUATED
+  startedAt         DateTime @default(now())
+  submittedAt       DateTime?
+  score             Float?
+  serverStartTime   DateTime @default(now())
+
+  // Relations
+  user              User     @relation(fields: [userId], references: [id])
+  userId            String
+  test              Test     @relation(fields: [testId], references: [id])
+  testId            String
+  answers           Answer[]
+
+  // A student can only attempt a test once
+  @@unique([userId, testId])
+  @@map("attempts")
+}
+
+// ──────────────────────────────────────
+// Answer — A student's response to one question
+// ──────────────────────────────────────
+
+model Answer {
+  id               String   @id @default(cuid())
+  selectedOption   Int?                              // MCQ: index of chosen option
+  numericalAnswer  Float?                            // NUMERICAL: the number typed
+  subjectiveAnswer String?                           // SUBJECTIVE: the text written
+  isCorrect        Boolean?                          // null until evaluated
+  marksAwarded     Float?                            // null until evaluated
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  // Relations
+  attempt          Attempt  @relation(fields: [attemptId], references: [id])
+  attemptId        String
+  question         Question @relation(fields: [questionId], references: [id])
+  questionId       String
+
+  // One answer per question per attempt
+  @@unique([attemptId, questionId])
+  @@map("answers")
+}

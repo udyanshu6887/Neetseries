@@ -1,0 +1,34 @@
+{
+  "name": "mir.ai",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "npm run dev --workspace=apps/web",
+    "build": "npm run build --workspace=apps/web",
+    "typecheck": "tsc --noEmit"
+  },
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "keywords": [],
+  "author": "Parag Udayanshu Niketan",
+  "license": "ISC",
+  "description": "A web application focused on education",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/udyanshu6887/Neetseries.git"
+  },
+  "bugs": {
+    "url": "https://github.com/udyanshu6887/Neetseries/issues"
+  },
+  "homepage": "https://github.com/udyanshu6887/Neetseries#readme",
+  "devDependencies": {
+    "@types/node": "^25.2.3",
+    "typescript": "^5.9.3"
+  },
+  "dependencies": {
+    "xlsx": "^0.18.5"
+  }
+}
