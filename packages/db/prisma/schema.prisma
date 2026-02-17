@@ -30,6 +30,7 @@ model User {
   questions    Question[]
   tests        Test[]
   attempts     Attempt[]
+  uploadEvents UploadEvent[]
 
   @@map("users")
 }
@@ -49,6 +50,7 @@ model Question {
   topic          String
   difficulty     String   @default("MEDIUM")    // EASY, MEDIUM, HARD
   explanation    String?
+  status         String   @default("DRAFT")     // DRAFT, ACTIVE
 
   // CSV Import Fields
   year            Int?
@@ -63,10 +65,32 @@ model Question {
   // Relations
   createdBy      User     @relation(fields: [createdById], references: [id])
   createdById    String
+  uploadEvent    UploadEvent? @relation(fields: [uploadEventId], references: [id])
+  uploadEventId  String?
   testQuestions  TestQuestion[]
   answers        Answer[]
 
   @@map("questions")
+}
+
+// ──────────────────────────────────────
+// Upload Event — Tracks each file upload batch
+// ──────────────────────────────────────
+
+model UploadEvent {
+  id            String    @id @default(cuid())
+  fileName      String
+  status        String    @default("PENDING")   // PENDING, PROCESSED
+  totalCount    Int       @default(0)
+  uploadedAt    DateTime  @default(now())
+  processedAt   DateTime?
+
+  // Relations
+  uploadedBy    User      @relation(fields: [uploadedById], references: [id])
+  uploadedById  String
+  questions     Question[]
+
+  @@map("upload_events")
 }
 
 // ──────────────────────────────────────

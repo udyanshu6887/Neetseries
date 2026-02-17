@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
+import { setAuthToken, setAuthUser } from "@/lib/auth";
 
 export function LoginForm() {
     const router = useRouter();
@@ -26,12 +27,15 @@ export function LoginForm() {
                 body: JSON.stringify(formData),
             });
 
+            const data = await res.json();
+
             if (!res.ok) {
-                const data = await res.json();
                 throw new Error(data.error?.message || "Login failed");
             }
 
-            // Success
+            // Success — save auth and redirect
+            if (data.data?.token) setAuthToken(data.data.token);
+            if (data.data?.user) setAuthUser(data.data.user);
             router.push("/dashboard");
             router.refresh();
         } catch (err: any) {

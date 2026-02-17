@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
+import { setAuthToken, setAuthUser } from "@/lib/auth";
 
 export function RegisterForm() {
     const router = useRouter();
@@ -14,7 +15,7 @@ export function RegisterForm() {
         email: "",
         password: "",
         confirmPassword: "",
-        role: "STUDENT" as "STUDENT" | "ADMIN",
+        role: "STUDENT" as "STUDENT" | "TEACHER" | "ADMIN",
         adminCode: "",
     });
 
@@ -48,12 +49,15 @@ export function RegisterForm() {
                 }),
             });
 
+            const data = await res.json();
+
             if (!res.ok) {
-                const data = await res.json();
                 throw new Error(data.error?.message || "Registration failed");
             }
 
-            // Success — redirect to dashboard
+            // Success — save auth and redirect
+            if (data.data?.token) setAuthToken(data.data.token);
+            if (data.data?.user) setAuthUser(data.data.user);
             router.push("/dashboard");
             router.refresh();
         } catch (err: any) {
@@ -117,8 +121,8 @@ export function RegisterForm() {
                             type="button"
                             onClick={() => setFormData({ ...formData, role: "STUDENT" })}
                             className={`flex-1 py-2.5 px-4 rounded-lg text-sm font-medium border transition-all ${formData.role === "STUDENT"
-                                    ? "bg-blue-600 text-white border-blue-600 shadow-md"
-                                    : "bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-700 hover:border-blue-300"
+                                ? "bg-blue-600 text-white border-blue-600 shadow-md"
+                                : "bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-700 hover:border-blue-300"
                                 }`}
                             disabled={isLoading}
                         >
@@ -126,10 +130,21 @@ export function RegisterForm() {
                         </button>
                         <button
                             type="button"
+                            onClick={() => setFormData({ ...formData, role: "TEACHER" })}
+                            className={`flex-1 py-2.5 px-4 rounded-lg text-sm font-medium border transition-all ${formData.role === "TEACHER"
+                                ? "bg-emerald-600 text-white border-emerald-600 shadow-md"
+                                : "bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-700 hover:border-emerald-300"
+                                }`}
+                            disabled={isLoading}
+                        >
+                            Teacher
+                        </button>
+                        <button
+                            type="button"
                             onClick={() => setFormData({ ...formData, role: "ADMIN" })}
                             className={`flex-1 py-2.5 px-4 rounded-lg text-sm font-medium border transition-all ${formData.role === "ADMIN"
-                                    ? "bg-violet-600 text-white border-violet-600 shadow-md"
-                                    : "bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-700 hover:border-violet-300"
+                                ? "bg-violet-600 text-white border-violet-600 shadow-md"
+                                : "bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-700 hover:border-violet-300"
                                 }`}
                             disabled={isLoading}
                         >

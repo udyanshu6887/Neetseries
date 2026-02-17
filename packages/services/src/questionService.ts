@@ -84,9 +84,11 @@ export async function list(filters?: {
     topic?: string;
     difficulty?: string;
     type?: string;
+    status?: string;
 }): Promise<QuestionResponse[]> {
     const questions = await prisma.question.findMany({
         where: {
+            status: filters?.status || "ACTIVE",
             ...(filters?.topic && { topic: filters.topic }),
             ...(filters?.difficulty && { difficulty: filters.difficulty }),
             ...(filters?.type && { type: filters.type }),
