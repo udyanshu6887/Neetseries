@@ -49,6 +49,7 @@ model Question {
   negativeMarks  Float    @default(1)
   topic          String
   difficulty     String   @default("MEDIUM")    // EASY, MEDIUM, HARD
+  category       String   @default("CONCEPTUAL") // CONCEPTUAL, FACTUAL, ANALYTICAL, APPLICATION, NUMERICAL, DIAGRAM_BASED
   explanation    String?
   status         String   @default("DRAFT")     // DRAFT, ACTIVE
 
@@ -157,6 +158,7 @@ model Attempt {
   id                String   @id @default(cuid())
   status            String   @default("IN_PROGRESS")   // IN_PROGRESS, SUBMITTED, ABANDONED
   evaluationStatus  String   @default("PENDING")        // PENDING, IN_REVIEW, EVALUATED
+  attemptNumber     Int      @default(1)
   startedAt         DateTime @default(now())
   submittedAt       DateTime?
   score             Float?
@@ -169,8 +171,6 @@ model Attempt {
   testId            String
   answers           Answer[]
 
-  // A student can only attempt a test once
-  @@unique([userId, testId])
   @@map("attempts")
 }
 
@@ -185,6 +185,7 @@ model Answer {
   subjectiveAnswer String?                           // SUBJECTIVE: the text written
   isCorrect        Boolean?                          // null until evaluated
   marksAwarded     Float?                            // null until evaluated
+  markedForReview  Boolean  @default(false)
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
 

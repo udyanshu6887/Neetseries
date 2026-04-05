@@ -84,7 +84,7 @@ export async function list(options?: {
 }
 
 // ──────────────────────────────────────
-// Get test by ID (with questions)
+// Get test by ID (basic)
 // ──────────────────────────────────────
 
 export async function getById(id: string): Promise<TestResponse | null> {
@@ -96,6 +96,94 @@ export async function getById(id: string): Promise<TestResponse | null> {
     });
 
     if (!test) return null;
+    return toResponse(test, test._count.testQuestions);
+}
+
+// ──────────────────────────────────────
+// Get test by ID WITH full question details
+// ──────────────────────────────────────
+
+export async function getByIdWithQuestions(id: string) {
+    const test = await prisma.test.findUnique({
+        where: { id },
+        include: {
+            testQuestions: {
+                orderBy: { order: "asc" },
+                include: {
+                    question: {
+                        select: {
+                            id: true,
+                            type: true,
+                            text: true,
+                            options: true,
+                            correctAnswer: true,
+                            marks: true,
+                            negativeMarks: true,
+                            topic: true,
+                            difficulty: true,
+                            category: true,
+                            subject: true,
+                            chapter: true,
+                            year: true,
+                        },
+                    },
+                },
+            },
+            _count: { select: { attempts: true } },
+        },
+    });
+
+    if (!test) return null;
+
+    const totalMarks = test.testQuestions.reduce((sum, tq) => {
+        return sum + (tq.customMarks ?? tq.question.marks);
+    }, 0);
+
+    return {
+        id: test.id,
+        title: test.title,
+        description: test.description,
+        duration: test.duration,
+        evaluationType: test.evaluationType,
+        isPublished: test.isPublished,
+        leaderboardVisible: test.leaderboardVisible,
+        totalQuestions: test.testQuestions.length,
+        totalMarks,
+        totalAttempts: test._count.attempts,
+        createdById: test.createdById,
+        createdAt: test.createdAt,
+        questions: test.testQuestions.map((tq) => ({
+            testQuestionId: tq.id,
+            order: tq.order,
+            customMarks: tq.customMarks,
+            customNegativeMarks: tq.customNegativeMarks,
+            ...tq.question,
+        })),
+    };
+}
+
+// ──────────────────────────────────────
+// Update test metadata
+// ──────────────────────────────────────
+
+export async function update(
+    id: string,
+    data: {
+        title?: string;
+        description?: string;
+        duration?: number;
+        evaluationType?: string;
+        leaderboardVisible?: boolean;
+    }
+): Promise<TestResponse> {
+    const test = await prisma.test.update({
+        where: { id },
+        data,
+        include: {
+            _count: { select: { testQuestions: true } },
+        },
+    });
+
     return toResponse(test, test._count.testQuestions);
 }
 
@@ -132,6 +220,54 @@ export async function addQuestion(
         customMarks: testQuestion.customMarks ?? undefined,
         customNegativeMarks: testQuestion.customNegativeMarks ?? undefined,
     };
+}
+
+// ──────────────────────────────────────
+// Remove a question from a test
+// ──────────────────────────────────────
+
+export async function removeQuestion(testId: string, questionId: string) {
+    await prisma.testQuestion.deleteMany({
+        where: { testId, questionId },
+    });
+}
+
+// ──────────────────────────────────────
+// Reorder questions in a test
+// ──────────────────────────────────────
+
+export async function reorderQuestions(
+    testId: string,
+    questionOrder: { testQuestionId: string; order: number }[]
+) {
+    await prisma.$transaction(
+        questionOrder.map((q) =>
+            prisma.testQuestion.update({
+                where: { id: q.testQuestionId },
+                data: { order: q.order },
+            })
+        )
+    );
+}
+
+// ──────────────────────────────────────
+// Delete a test (guard: no attempts allowed)
+// ──────────────────────────────────────
+
+export async function deleteTest(id: string) {
+    const test = await prisma.test.findUnique({
+        where: { id },
+        include: { _count: { select: { attempts: true } } },
+    });
+
+    if (!test) throw new Error("TEST_NOT_FOUND");
+    if (test._count.attempts > 0) throw new Error("TEST_HAS_ATTEMPTS");
+
+    // Delete test questions first, then the test
+    await prisma.$transaction([
+        prisma.testQuestion.deleteMany({ where: { testId: id } }),
+        prisma.test.delete({ where: { id } }),
+    ]);
 }
 
 // ──────────────────────────────────────

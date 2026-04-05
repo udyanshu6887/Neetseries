@@ -3,7 +3,7 @@
 // ──────────────────────────────────────
 
 import { prisma } from "@mirai/db";
-import type { CreateQuestionInput, QuestionResponse, QuestionType, Difficulty, MCQOption } from "@mirai/types";
+import type { CreateQuestionInput, QuestionResponse, QuestionType, Difficulty, QuestionCategory, MCQOption } from "@mirai/types";
 
 // Helper: map Prisma question row → QuestionResponse
 function toResponse(q: {
@@ -16,6 +16,7 @@ function toResponse(q: {
     negativeMarks: number;
     topic: string;
     difficulty: string;
+    category: string;
     explanation: string | null;
     year: number | null;
     subject: string | null;
@@ -34,6 +35,7 @@ function toResponse(q: {
         negativeMarks: q.negativeMarks,
         topic: q.topic,
         difficulty: q.difficulty as Difficulty,
+        category: q.category as QuestionCategory,
         explanation: q.explanation ?? undefined,
         year: q.year ?? undefined,
         subject: q.subject ?? undefined,

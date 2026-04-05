@@ -15,6 +15,15 @@ export enum Difficulty {
     HARD = "HARD",
 }
 
+export enum QuestionCategory {
+    CONCEPTUAL = "CONCEPTUAL",
+    FACTUAL = "FACTUAL",
+    ANALYTICAL = "ANALYTICAL",
+    APPLICATION = "APPLICATION",
+    NUMERICAL = "NUMERICAL",
+    DIAGRAM_BASED = "DIAGRAM_BASED",
+}
+
 // ──────────────────────────────────────
 // MCQ Option Shape
 // ──────────────────────────────────────
@@ -38,6 +47,7 @@ export interface CreateQuestionInput {
     negativeMarks: number;
     topic: string;
     difficulty: Difficulty;
+    category?: QuestionCategory;
     explanation?: string;
     // CSV Import Fields
     year?: number;
@@ -56,6 +66,7 @@ export interface QuestionResponse {
     negativeMarks: number;
     topic: string;
     difficulty: Difficulty;
+    category?: QuestionCategory;
     explanation?: string;
     // CSV Import Fields
     year?: number;

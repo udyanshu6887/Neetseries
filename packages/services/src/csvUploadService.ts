@@ -1,7 +1,7 @@
 import * as XLSX from "xlsx";
 import { prisma } from "@mirai/db";
 import * as embeddingService from "./embeddingService";
-import { QuestionType, Difficulty } from "@mirai/types";
+import { QuestionType, Difficulty, QuestionCategory } from "@mirai/types";
 
 // ---------------------------------------------------------------------------
 // Header normalisation — maps many common column names to canonical keys
@@ -23,6 +23,7 @@ const HEADER_ALIASES: Record<string, string> = {
     "time expected (sec)": "Time Expected (Sec)", "time_expected_sec": "Time Expected (Sec)",
     "timeexpectedsec": "Time Expected (Sec)", "time_expected": "Time Expected (Sec)",
     "assertion": "Assertion", "reason": "Reason",
+    "category": "Category", "question_category": "Category", "questioncategory": "Category",
 };
 
 function normalizeRow(raw: Record<string, any>): Record<string, any> {
@@ -38,6 +39,17 @@ function normalizeRow(raw: Record<string, any>): Record<string, any> {
 // ---------------------------------------------------------------------------
 // Parse a single normalised row into a question-create payload
 // ---------------------------------------------------------------------------
+function parseCategory(raw?: string): QuestionCategory {
+    if (!raw) return QuestionCategory.CONCEPTUAL;
+    const upper = String(raw).trim().toUpperCase().replace(/[\s-]+/g, "_");
+    if (upper === "FACTUAL" || upper === "FACT") return QuestionCategory.FACTUAL;
+    if (upper === "ANALYTICAL" || upper === "ANALYSIS") return QuestionCategory.ANALYTICAL;
+    if (upper === "APPLICATION" || upper === "APPLIED") return QuestionCategory.APPLICATION;
+    if (upper === "NUMERICAL" || upper === "CALCULATION") return QuestionCategory.NUMERICAL;
+    if (upper === "DIAGRAM_BASED" || upper === "DIAGRAM" || upper === "FIGURE") return QuestionCategory.DIAGRAM_BASED;
+    return QuestionCategory.CONCEPTUAL;
+}
+
 function parseRow(row: Record<string, any>) {
     if (!row["Type"] || (!row["Question Text"] && (!row["Assertion"] || !row["Reason"]))) return null;
 
@@ -97,6 +109,7 @@ function parseRow(row: Record<string, any>) {
         chapter: row["Chapter"] || null,
         hint: row["Hint"] || null,
         timeExpectedSec: row["Time Expected (Sec)"] ? Number(row["Time Expected (Sec)"]) : null,
+        category: parseCategory(row["Category"]),
         status: "DRAFT",
     };
 }

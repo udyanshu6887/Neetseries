@@ -17,7 +17,7 @@ export const PATCH = withAuth(
             const body = await req.json();
             const allowedFields = [
                 "type", "text", "options", "correctAnswer",
-                "marks", "negativeMarks", "topic", "difficulty",
+                "marks", "negativeMarks", "topic", "difficulty", "category",
                 "explanation", "year", "subject", "chapter",
                 "hint", "timeExpectedSec",
             ];

@@ -32,6 +32,7 @@ export const GET = withAuth(
                             chapter: true,
                             hint: true,
                             timeExpectedSec: true,
+                            category: true,
                         },
                     },
                     uploadedBy: { select: { name: true } },

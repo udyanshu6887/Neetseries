@@ -14,6 +14,7 @@ interface Question {
     negativeMarks: number;
     topic: string;
     difficulty: string;
+    category: string;
     explanation: string | null;
     status: string;
     year: number | null;
@@ -126,6 +127,18 @@ export default function EventDetailPage() {
         }
     };
 
+    const categoryColor = (c: string) => {
+        switch (c) {
+            case "CONCEPTUAL": return "bg-sky-100 text-sky-700 dark:bg-sky-900/30 dark:text-sky-400";
+            case "FACTUAL": return "bg-indigo-100 text-indigo-700 dark:bg-indigo-900/30 dark:text-indigo-400";
+            case "ANALYTICAL": return "bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400";
+            case "APPLICATION": return "bg-teal-100 text-teal-700 dark:bg-teal-900/30 dark:text-teal-400";
+            case "NUMERICAL": return "bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400";
+            case "DIAGRAM_BASED": return "bg-pink-100 text-pink-700 dark:bg-pink-900/30 dark:text-pink-400";
+            default: return "bg-slate-100 text-slate-600";
+        }
+    };
+
     const statusColor = (s: string) => {
         switch (s) {
             case "DRAFT": return "bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400";
@@ -203,6 +216,7 @@ export default function EventDetailPage() {
                                 <th className="text-left px-4 py-3 font-semibold text-slate-600 dark:text-slate-300 text-xs">Chapter</th>
                                 <th className="text-left px-4 py-3 font-semibold text-slate-600 dark:text-slate-300 text-xs">Topic</th>
                                 <th className="text-left px-4 py-3 font-semibold text-slate-600 dark:text-slate-300 text-xs">Difficulty</th>
+                                <th className="text-left px-4 py-3 font-semibold text-slate-600 dark:text-slate-300 text-xs">Category</th>
                                 <th className="text-center px-4 py-3 font-semibold text-slate-600 dark:text-slate-300 text-xs">Marks</th>
                                 <th className="text-center px-4 py-3 font-semibold text-slate-600 dark:text-slate-300 text-xs">-ve</th>
                                 <th className="text-left px-4 py-3 font-semibold text-slate-600 dark:text-slate-300 text-xs">Year</th>
@@ -292,6 +306,21 @@ export default function EventDetailPage() {
                                                 </select>
                                             ) : (
                                                 <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${difficultyColor(q.difficulty)}`}>{q.difficulty}</span>
+                                            )}
+                                        </td>
+                                        <td className="px-4 py-3">
+                                            {isEditing ? (
+                                                <select value={editData.category} onChange={(e) => setEditData({ ...editData, category: e.target.value })}
+                                                    className="px-2 py-1 text-xs rounded border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-200">
+                                                    <option value="CONCEPTUAL">Conceptual</option>
+                                                    <option value="FACTUAL">Factual</option>
+                                                    <option value="ANALYTICAL">Analytical</option>
+                                                    <option value="APPLICATION">Application</option>
+                                                    <option value="NUMERICAL">Numerical</option>
+                                                    <option value="DIAGRAM_BASED">Diagram Based</option>
+                                                </select>
+                                            ) : (
+                                                <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${categoryColor(q.category)}`}>{q.category}</span>
                                             )}
                                         </td>
                                         <td className="px-4 py-3 text-center">

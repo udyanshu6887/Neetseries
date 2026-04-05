@@ -8,3 +8,4 @@ export * as questionService from "./questionService";
 export * as testService from "./testService";
 export * as csvUploadService from "./csvUploadService";
 export * as embeddingService from "./embeddingService";
+export * as attemptService from "./attemptService";
